@@ -15,17 +15,17 @@ import (
 )
 
 func K8S() {
-	kubeconfig := ".kube/config"
+	kubeConfig := "E:/Goproject/src/kubmanager/kube/config.yaml"
 	// use the current context in kubeconfig
-	config, err := clientcmd.BuildConfigFromFlags("", kubeconfig)
+	config, err := clientcmd.BuildConfigFromFlags("", kubeConfig)
 	if err != nil {
 		panic(err.Error())
 	}
 
 	// create the clientset
-	clientset, err := kubernetes.NewForConfig(config)
+	clientSet, err := kubernetes.NewForConfig(config)
 	if err != nil {
 		panic(err.Error())
 	}
-	global.KubeConfigSet = clientset
+	global.KubeConfigSet = clientSet
 }
