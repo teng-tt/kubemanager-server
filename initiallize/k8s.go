@@ -15,7 +15,7 @@ import (
 )
 
 func K8S() {
-	kubeConfig := "E:/Goproject/src/kubmanager/kube/config.yaml"
+	kubeConfig := "E:/Goproject/src/kubmanager/.kube/config.yaml"
 	// use the current context in kubeconfig
 	config, err := clientcmd.BuildConfigFromFlags("", kubeConfig)
 	if err != nil {
