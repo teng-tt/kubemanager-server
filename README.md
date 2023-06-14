@@ -27,3 +27,14 @@ go语言开发的的k8s集群管理工具
 ```
 
 > 参考文档：https://github.com/kubernetes/client-go
+
+## 项目接口开发
+
+### Pod管理接口开发
+
+- [x] 命名空间列表接口
+- Pod创建
+- Pod查看（详情、列表）
+---
+- Pod编辑（更新/升级）
+- Pod删除

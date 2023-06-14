@@ -1,0 +1,16 @@
+{
+  "name": "test",
+  "namespace": "test",
+  "labels": [
+    {
+      "key": "cm",
+      "value": "test"
+    }
+  ],
+  "data": [
+    {
+      "key": "testKey",
+      "value": "testValue"
+    }
+  ]
+}
