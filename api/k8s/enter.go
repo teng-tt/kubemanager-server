@@ -1,6 +1,9 @@
 package k8s
 
-import "kubmanager/validate"
+import (
+	"kubmanager/convert"
+	"kubmanager/validate"
+)
 
 type ApiGroup struct {
 	PodApi
@@ -8,3 +11,4 @@ type ApiGroup struct {
 }
 
 var podValidate = validate.VaildateGroupApp.PodValidate
+var podConvert = convert.ConvertGroupApp.PodConvert

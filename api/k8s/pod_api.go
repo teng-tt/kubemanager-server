@@ -25,14 +25,16 @@ func (p *PodApi) CreateOrUpdatePod(c *gin.Context) {
 		response.FailWithMessage(c, "参数验证失败， detail: "+err.Error())
 		return
 	}
+	k8sPod := podConvert.PodReq2K8s(podReq)
 	ctx := context.TODO()
-	createdPod, err := global.KubeConfigSet.CoreV1().Pods("").Create(ctx, nil, metav1.CreateOptions{})
+	createdPod, err := global.KubeConfigSet.CoreV1().Pods(k8sPod.Namespace).Create(ctx, k8sPod, metav1.CreateOptions{})
 	if err != nil {
-		errMsg := fmt.Sprintf("Poc[%s]创建失败，detail：%s", createdPod.Name, err.Error())
+		errMsg := fmt.Sprintf("Poc[%s-%s]创建失败，detail：%s", k8sPod.Namespace, k8sPod.Name, err.Error())
 		response.FailWithMessage(c, errMsg)
 		return
 	}
-	response.Success(c)
+	successMsg := fmt.Sprintf("Pod[%s-%s]创建成功", createdPod.Namespace, createdPod.Name)
+	response.SuccessWithMessage(c, successMsg)
 
 }
 
