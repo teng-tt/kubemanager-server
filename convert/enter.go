@@ -3,7 +3,7 @@ package convert
 import "kubmanager/convert/pod"
 
 type ConvertGroup struct {
-	PodConvert pod.PodConvert
+	PodConvert pod.PodConvertGroup
 }
 
 var ConvertGroupApp = new(ConvertGroup)

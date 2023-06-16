@@ -39,7 +39,7 @@ type DnsConfig struct {
 type NetWorking struct {
 	HostNetwork bool          `json:"hostNetwork"`
 	HostName    string        `json:"hostName"`
-	DnsPolice   string        `json:"dnsPolice"`
+	DnsPolicy   string        `json:"dnsPolicy"`
 	DnsConfig   DnsConfig     `json:"dnsConfig"`
 	HostAliases []ListMapItem `json:"hostAliases"`
 }
@@ -53,7 +53,7 @@ type Resources struct {
 }
 
 type VolumeMount struct {
-	Name      string `json:"name"`      // 挂载卷名称
+	MountName string `json:"mountName"` // 挂载卷名称
 	MountPath string `json:"mountPath"` // 挂载卷->对应的容器内的路径
 	ReadOnly  bool   `json:"readOnly"`  // 是否只读
 }
@@ -89,7 +89,7 @@ type ContainerProbe struct {
 	HttpGet   ProbeHttpGet   `json:"httpGet"`
 	Exec      ProbeCommand   `json:"exec"`
 	TcpSocket ProbeTcpSocket `json:"tcpSocket"`
-	ProbeTime ProbeTime      `json:"probeTime"`
+	ProbeTime
 }
 
 type ContainerPort struct {
@@ -110,7 +110,7 @@ type Container struct {
 	Privileged      bool            `json:"privileged"`      // 是否开启特权模式
 	Resources       Resources       `json:"resources"`       // 容器申请配额
 	VolumeMounts    []VolumeMount   `json:"volumeMounts"`    // 容器挂载卷
-	StartProbe      ContainerProbe  `json:"startProbe"`      // 启动探针
+	StartupProbe    ContainerProbe  `json:"startupProbe"`    // 启动探针
 	LivenessProbe   ContainerProbe  `json:"livenessProbe"`   // 存活探针
 	ReadinessProbe  ContainerProbe  `json:"readinessProbe"`  // 就绪探针
 }

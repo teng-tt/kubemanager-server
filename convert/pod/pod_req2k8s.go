@@ -20,11 +20,11 @@ const (
 	volume_empty = "emptyDir"
 )
 
-type PodConvert struct {
+type Req2K8sConvert struct {
 }
 
 // PodReq2K8s 将 pod 的请求格式的数据 转换为 k8s 结构数据
-func (p *PodConvert) PodReq2K8s(podReq pod_req.Pod) *corev1.Pod {
+func (p *Req2K8sConvert) PodReq2K8s(podReq pod_req.Pod) *corev1.Pod {
 	labels := podReq.Base.Labels
 	k8sLabels := p.getK8sLabels(labels)
 	return &corev1.Pod{
@@ -40,7 +40,7 @@ func (p *PodConvert) PodReq2K8s(podReq pod_req.Pod) *corev1.Pod {
 			DNSConfig: &corev1.PodDNSConfig{
 				Nameservers: podReq.NetWorking.DnsConfig.Nameservers,
 			},
-			DNSPolicy:     corev1.DNSPolicy(podReq.NetWorking.DnsPolice),
+			DNSPolicy:     corev1.DNSPolicy(podReq.NetWorking.DnsPolicy),
 			HostAliases:   p.getK8sHostAliases(podReq.NetWorking.HostAliases),
 			Hostname:      podReq.NetWorking.HostName,
 			RestartPolicy: corev1.RestartPolicy(podReq.Base.RestartPolicy),
@@ -48,7 +48,7 @@ func (p *PodConvert) PodReq2K8s(podReq pod_req.Pod) *corev1.Pod {
 	}
 }
 
-func (p *PodConvert) getK8sHostAliases(podReqHostAliases []pod_req.ListMapItem) []corev1.HostAlias {
+func (p *Req2K8sConvert) getK8sHostAliases(podReqHostAliases []pod_req.ListMapItem) []corev1.HostAlias {
 	podK8sHotsAliases := make([]corev1.HostAlias, 0)
 	for _, item := range podReqHostAliases {
 		podK8sHotsAliases = append(podK8sHotsAliases, corev1.HostAlias{
@@ -60,7 +60,7 @@ func (p *PodConvert) getK8sHostAliases(podReqHostAliases []pod_req.ListMapItem) 
 	return podK8sHotsAliases
 }
 
-func (p *PodConvert) getK8sVolumes(podReqVilumes []pod_req.Volume) []corev1.Volume {
+func (p *Req2K8sConvert) getK8sVolumes(podReqVilumes []pod_req.Volume) []corev1.Volume {
 	podK8sVolumes := make([]corev1.Volume, 0)
 	for _, volume := range podReqVilumes {
 		if volume.Type != volume_empty {
@@ -79,7 +79,7 @@ func (p *PodConvert) getK8sVolumes(podReqVilumes []pod_req.Volume) []corev1.Volu
 
 }
 
-func (p *PodConvert) getK8sContainers(podReqContainers []pod_req.Container) []corev1.Container {
+func (p *Req2K8sConvert) getK8sContainers(podReqContainers []pod_req.Container) []corev1.Container {
 	podK8sContainers := make([]corev1.Container, 0)
 	for _, item := range podReqContainers {
 		podK8sContainers = append(podK8sContainers, p.getK8sContainer(item))
@@ -89,7 +89,7 @@ func (p *PodConvert) getK8sContainers(podReqContainers []pod_req.Container) []co
 	return podK8sContainers
 }
 
-func (p *PodConvert) getK8sContainer(podReqContainer pod_req.Container) corev1.Container {
+func (p *Req2K8sConvert) getK8sContainer(podReqContainer pod_req.Container) corev1.Container {
 	k8sContainer := corev1.Container{
 		Name:            podReqContainer.Name,
 		Image:           podReqContainer.Image,
@@ -103,7 +103,7 @@ func (p *PodConvert) getK8sContainer(podReqContainer pod_req.Container) corev1.C
 		},
 		Env:            p.getK8sEnv(podReqContainer.Envs),
 		VolumeMounts:   p.getK8sVolumeMount(podReqContainer.VolumeMounts),
-		StartupProbe:   p.getK8sContainerProbe(podReqContainer.StartProbe),
+		StartupProbe:   p.getK8sContainerProbe(podReqContainer.StartupProbe),
 		LivenessProbe:  p.getK8sContainerProbe(podReqContainer.LivenessProbe),
 		ReadinessProbe: p.getK8sContainerProbe(podReqContainer.ReadinessProbe),
 		Resources:      p.getK8sResources(podReqContainer.Resources),
@@ -113,7 +113,7 @@ func (p *PodConvert) getK8sContainer(podReqContainer pod_req.Container) corev1.C
 	return k8sContainer
 }
 
-func (p *PodConvert) getK8sPort(podReqPort []pod_req.ContainerPort) []corev1.ContainerPort {
+func (p *Req2K8sConvert) getK8sPort(podReqPort []pod_req.ContainerPort) []corev1.ContainerPort {
 	podK8sContainerPort := make([]corev1.ContainerPort, 0)
 	for _, item := range podReqPort {
 		podK8sContainerPort = append(podK8sContainerPort, corev1.ContainerPort{
@@ -125,7 +125,7 @@ func (p *PodConvert) getK8sPort(podReqPort []pod_req.ContainerPort) []corev1.Con
 	return podK8sContainerPort
 }
 
-func (p *PodConvert) getK8sResources(podReqResources pod_req.Resources) corev1.ResourceRequirements {
+func (p *Req2K8sConvert) getK8sResources(podReqResources pod_req.Resources) corev1.ResourceRequirements {
 	var k8sPodResources corev1.ResourceRequirements
 	if !podReqResources.Enable {
 		return k8sPodResources
@@ -141,49 +141,54 @@ func (p *PodConvert) getK8sResources(podReqResources pod_req.Resources) corev1.R
 	return k8sPodResources
 }
 
-func (p *PodConvert) getK8sContainerProbe(podReqProbe pod_req.ContainerProbe) *corev1.Probe {
+func (p *Req2K8sConvert) getK8sContainerProbe(podReqProbe pod_req.ContainerProbe) *corev1.Probe {
 	if podReqProbe.Enable {
-		return nil
+		k8sProbe := corev1.Probe{
+			InitialDelaySeconds: podReqProbe.InitialDelaySeconds,
+			PeriodSeconds:       podReqProbe.PeriodSeconds,
+			TimeoutSeconds:      podReqProbe.TimeOutSeconds,
+			SuccessThreshold:    podReqProbe.SuccessThreshold,
+			FailureThreshold:    podReqProbe.FailureThreshold,
+		}
+		switch podReqProbe.Type {
+		case probe_http:
+			httpGet := podReqProbe.HttpGet
+			K8sHttpHeaders := make([]corev1.HTTPHeader, 0)
+			for _, header := range httpGet.HttpHeaders {
+				K8sHttpHeaders = append(K8sHttpHeaders, corev1.HTTPHeader{
+					Name:  header.Key,
+					Value: header.Value,
+				})
+			}
+			k8sProbe.HTTPGet = &corev1.HTTPGetAction{
+				Scheme:      corev1.URIScheme(httpGet.Scheme),
+				Host:        httpGet.Host,
+				Port:        intstr.FromInt(int(httpGet.Port)),
+				Path:        httpGet.Path,
+				HTTPHeaders: K8sHttpHeaders,
+			}
+		case probe_tcp:
+			tcpSocket := podReqProbe.TcpSocket
+			k8sProbe.TCPSocket = &corev1.TCPSocketAction{
+				Host: tcpSocket.Host,
+				Port: intstr.FromInt(int(tcpSocket.Port)),
+			}
+		case probe_exec:
+			exec := podReqProbe.Exec
+			k8sProbe.Exec = &corev1.ExecAction{
+				Command: exec.Command,
+			}
+		}
+		return &k8sProbe
 	}
-	var k8sProbe corev1.Probe
-	switch podReqProbe.Type {
-	case probe_http:
-		httpGet := podReqProbe.HttpGet
-		K8sHttpHeaders := make([]corev1.HTTPHeader, 0)
-		for _, header := range httpGet.HttpHeaders {
-			K8sHttpHeaders = append(K8sHttpHeaders, corev1.HTTPHeader{
-				Name:  header.Key,
-				Value: header.Value,
-			})
-		}
-		k8sProbe.HTTPGet = &corev1.HTTPGetAction{
-			Scheme:      corev1.URIScheme(httpGet.Scheme),
-			Host:        httpGet.Host,
-			Port:        intstr.FromInt(int(httpGet.Port)),
-			Path:        httpGet.Path,
-			HTTPHeaders: K8sHttpHeaders,
-		}
-	case probe_tcp:
-		tcpSocket := podReqProbe.TcpSocket
-		k8sProbe.TCPSocket = &corev1.TCPSocketAction{
-			Host: tcpSocket.Host,
-			Port: intstr.FromInt(int(tcpSocket.Port)),
-		}
-	case probe_exec:
-		exec := podReqProbe.Exec
-		k8sProbe.Exec = &corev1.ExecAction{
-			Command: exec.Command,
-		}
-	}
-
-	return &k8sProbe
+	return nil
 }
 
-func (p *PodConvert) getK8sVolumeMount(podReqMounts []pod_req.VolumeMount) []corev1.VolumeMount {
+func (p *Req2K8sConvert) getK8sVolumeMount(podReqMounts []pod_req.VolumeMount) []corev1.VolumeMount {
 	podK8sVolumMounts := make([]corev1.VolumeMount, 0)
 	for _, mount := range podReqMounts {
 		podK8sVolumMounts = append(podK8sVolumMounts, corev1.VolumeMount{
-			Name:      mount.Name,
+			Name:      mount.MountName,
 			MountPath: mount.MountPath,
 			ReadOnly:  mount.ReadOnly,
 		})
@@ -192,7 +197,7 @@ func (p *PodConvert) getK8sVolumeMount(podReqMounts []pod_req.VolumeMount) []cor
 	return podK8sVolumMounts
 }
 
-func (p *PodConvert) getK8sEnv(podReqEnv []pod_req.ListMapItem) []corev1.EnvVar {
+func (p *Req2K8sConvert) getK8sEnv(podReqEnv []pod_req.ListMapItem) []corev1.EnvVar {
 	podK8sEnvs := make([]corev1.EnvVar, 0)
 	for _, item := range podReqEnv {
 		podK8sEnvs = append(podK8sEnvs, corev1.EnvVar{
@@ -204,7 +209,7 @@ func (p *PodConvert) getK8sEnv(podReqEnv []pod_req.ListMapItem) []corev1.EnvVar 
 }
 
 // Pod 请求 labels 转换为 k8s labels
-func (p *PodConvert) getK8sLabels(podReqLabels []pod_req.ListMapItem) map[string]string {
+func (p *Req2K8sConvert) getK8sLabels(podReqLabels []pod_req.ListMapItem) map[string]string {
 	podK8sLabels := make(map[string]string)
 	for _, label := range podReqLabels {
 		podK8sLabels[label.Key] = label.Value

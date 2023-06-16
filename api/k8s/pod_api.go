@@ -2,16 +2,44 @@ package k8s
 
 import (
 	"context"
-	"fmt"
+	"encoding/json"
 	"github.com/gin-gonic/gin"
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/types"
 	"kubmanager/global"
 	pod_req "kubmanager/model/pod/request"
 	"kubmanager/response"
-	"net/http"
 )
 
 type PodApi struct {
+}
+
+// UpdatePod 因为update的字段属性有限，而实际更新过程当中 会修改定义的任意字段
+func (p *PodApi) UpdatePod(ctx context.Context, pod *corev1.Pod) error {
+	_, err := global.KubeConfigSet.CoreV1().Pods(pod.Namespace).Update(ctx, pod, metav1.UpdateOptions{})
+	return err
+}
+
+// PatchPod 打补丁，需要传指定更新的地方进行操作，比较麻烦， 打补丁：没有就添加，有就执行更新
+func (p *PodApi) PatchPod(ctx context.Context, pod *corev1.Pod, patchData map[string]interface{}) error {
+	//patchData["metadata"] = map[string]interface{}{
+	//	"labels": map[string]string{
+	//		"foo": "bar2",
+	//		"app": "testnginx",
+	//	},
+	//}
+
+	patchDataByte, _ := json.Marshal(patchData)
+	_, err := global.KubeConfigSet.CoreV1().Pods(pod.Namespace).Patch(
+		ctx,
+		pod.Name,
+		types.StrategicMergePatchType,
+		patchDataByte,
+		metav1.PatchOptions{},
+	)
+
+	return err
 }
 
 func (p *PodApi) CreateOrUpdatePod(c *gin.Context) {
@@ -25,31 +53,42 @@ func (p *PodApi) CreateOrUpdatePod(c *gin.Context) {
 		response.FailWithMessage(c, "参数验证失败， detail: "+err.Error())
 		return
 	}
-	k8sPod := podConvert.PodReq2K8s(podReq)
-	ctx := context.TODO()
-	createdPod, err := global.KubeConfigSet.CoreV1().Pods(k8sPod.Namespace).Create(ctx, k8sPod, metav1.CreateOptions{})
-	if err != nil {
-		errMsg := fmt.Sprintf("Poc[%s-%s]创建失败，detail：%s", k8sPod.Namespace, k8sPod.Name, err.Error())
-		response.FailWithMessage(c, errMsg)
-		return
+	if msg, err := podService.CreateOrUpdate(podReq); err != nil {
+		response.FailWithMessage(c, msg)
+	} else {
+		response.SuccessWithMessage(c, msg)
 	}
-	successMsg := fmt.Sprintf("Pod[%s-%s]创建成功", createdPod.Namespace, createdPod.Name)
-	response.SuccessWithMessage(c, successMsg)
 
 }
 
-func (p *PodApi) GetPodList(c *gin.Context) {
-	ctx := context.TODO()
-	list, err := global.KubeConfigSet.CoreV1().Pods("").List(ctx, metav1.ListOptions{})
+func (p *PodApi) GetPodListOrDetail(c *gin.Context) {
+	namespace := c.Param("namespace")
+	name := c.Query("name")
+	if name != "" {
+		detail, err := podService.GetPodDetail(namespace, name)
+		if err != nil {
+			response.FailWithMessage(c, err.Error())
+			return
+		}
+		response.SuccessWithDetailed(c, "获取Pod详情成功", detail)
+	} else {
+		podList, err := podService.GetPodList(namespace)
+		if err != nil {
+			response.FailWithMessage(c, err.Error())
+			return
+		}
+		response.SuccessWithDetailed(c, "获取Pod列表成功", podList)
+	}
+
+}
+
+func (*PodApi) DeletePod(c *gin.Context) {
+	namespace := c.Param("namespace")
+	name := c.Param("name")
+	err := podService.DeletePod(namespace, name)
 	if err != nil {
-		fmt.Println(err.Error())
+		response.FailWithMessage(c, "删除Pod失败，detail："+err.Error())
+	} else {
+		response.Success(c)
 	}
-
-	for _, item := range list.Items {
-		fmt.Println(item.Namespace, item.Name)
-	}
-
-	c.JSON(http.StatusOK, gin.H{
-		"message": "pong",
-	})
 }
