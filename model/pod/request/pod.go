@@ -1,15 +1,12 @@
 package request
 
-type ListMapItem struct {
-	Key   string `json:"key"`
-	Value string `json:"value"`
-}
+import "kubmanager/model/base"
 
 type Base struct {
-	Name          string        `json:"name"`          // 名称
-	Labels        []ListMapItem `json:"labels"`        // 标签
-	NameSpace     string        `json:"nameSpace"`     // 命名空间
-	RestartPolicy string        `json:"restartPolicy"` // 重启策略 Always | Never | On-Failure
+	Name          string             `json:"name"`          // 名称
+	Labels        []base.ListMapItem `json:"labels"`        // 标签
+	NameSpace     string             `json:"nameSpace"`     // 命名空间
+	RestartPolicy string             `json:"restartPolicy"` // 重启策略 Always | Never | On-Failure
 }
 
 type Volume struct {
@@ -37,11 +34,11 @@ type DnsConfig struct {
 }
 
 type NetWorking struct {
-	HostNetwork bool          `json:"hostNetwork"`
-	HostName    string        `json:"hostName"`
-	DnsPolicy   string        `json:"dnsPolicy"`
-	DnsConfig   DnsConfig     `json:"dnsConfig"`
-	HostAliases []ListMapItem `json:"hostAliases"`
+	HostNetwork bool               `json:"hostNetwork"`
+	HostName    string             `json:"hostName"`
+	DnsPolicy   string             `json:"dnsPolicy"`
+	DnsConfig   DnsConfig          `json:"dnsConfig"`
+	HostAliases []base.ListMapItem `json:"hostAliases"`
 }
 
 type Resources struct {
@@ -59,11 +56,11 @@ type VolumeMount struct {
 }
 
 type ProbeHttpGet struct {
-	Scheme      string        `json:"scheme"`      // 请求协议 http|https
-	Host        string        `json:"host"`        // 请求主机，如果为空，那么就是Pod内请求
-	Path        string        `json:"path"`        // 请求路径
-	Port        int32         `json:"port"`        // 请求端口
-	HttpHeaders []ListMapItem `json:"httpHeaders"` // 请求头
+	Scheme      string             `json:"scheme"`      // 请求协议 http|https
+	Host        string             `json:"host"`        // 请求主机，如果为空，那么就是Pod内请求
+	Path        string             `json:"path"`        // 请求路径
+	Port        int32              `json:"port"`        // 请求端口
+	HttpHeaders []base.ListMapItem `json:"httpHeaders"` // 请求头
 }
 
 type ProbeCommand struct {
@@ -98,21 +95,21 @@ type ContainerPort struct {
 	HostPort      int32  `json:"hostPort"`
 }
 type Container struct {
-	Name            string          `json:"name"`            // 容器的名称
-	Image           string          `json:"image"`           // 容器点镜像
-	ImagePullPolicy string          `json:"imagePullPolicy"` // 镜像的拉取策略
-	Tty             bool            `json:"tty"`             // 是否开启伪终端
-	Port            []ContainerPort `json:"port"`            // 映射端口
-	WorkingDir      string          `json:"workingDir"`      // 工作目录
-	Command         []string        `json:"command"`         // 执行命令
-	Args            []string        `json:"args"`            // 命令行参数
-	Envs            []ListMapItem   `json:"envs"`            // 环境变量
-	Privileged      bool            `json:"privileged"`      // 是否开启特权模式
-	Resources       Resources       `json:"resources"`       // 容器申请配额
-	VolumeMounts    []VolumeMount   `json:"volumeMounts"`    // 容器挂载卷
-	StartupProbe    ContainerProbe  `json:"startupProbe"`    // 启动探针
-	LivenessProbe   ContainerProbe  `json:"livenessProbe"`   // 存活探针
-	ReadinessProbe  ContainerProbe  `json:"readinessProbe"`  // 就绪探针
+	Name            string             `json:"name"`            // 容器的名称
+	Image           string             `json:"image"`           // 容器点镜像
+	ImagePullPolicy string             `json:"imagePullPolicy"` // 镜像的拉取策略
+	Tty             bool               `json:"tty"`             // 是否开启伪终端
+	Port            []ContainerPort    `json:"port"`            // 映射端口
+	WorkingDir      string             `json:"workingDir"`      // 工作目录
+	Command         []string           `json:"command"`         // 执行命令
+	Args            []string           `json:"args"`            // 命令行参数
+	Envs            []base.ListMapItem `json:"envs"`            // 环境变量
+	Privileged      bool               `json:"privileged"`      // 是否开启特权模式
+	Resources       Resources          `json:"resources"`       // 容器申请配额
+	VolumeMounts    []VolumeMount      `json:"volumeMounts"`    // 容器挂载卷
+	StartupProbe    ContainerProbe     `json:"startupProbe"`    // 启动探针
+	LivenessProbe   ContainerProbe     `json:"livenessProbe"`   // 存活探针
+	ReadinessProbe  ContainerProbe     `json:"readinessProbe"`  // 就绪探针
 }
 
 type Pod struct {

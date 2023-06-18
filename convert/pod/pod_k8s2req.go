@@ -3,6 +3,7 @@ package pod
 import (
 	"fmt"
 	corev1 "k8s.io/api/core/v1"
+	"kubmanager/model/base"
 	pod_req "kubmanager/model/pod/request"
 	pod_res "kubmanager/model/pod/response"
 	"strings"
@@ -13,6 +14,7 @@ const (
 )
 
 type K8s2RqeConver struct {
+	volumeMap map[string]string
 }
 
 func (k *K8s2RqeConver) PodK8s2Req(podK8s corev1.Pod) pod_req.Pod {
@@ -48,10 +50,10 @@ func (k *K8s2RqeConver) getReqContainerPorts(portsK8s []corev1.ContainerPort) []
 	return portsReq
 }
 
-func (k *K8s2RqeConver) getReqContainerEnvs(envsK8s []corev1.EnvVar) []pod_req.ListMapItem {
-	envsReq := make([]pod_req.ListMapItem, 0)
+func (k *K8s2RqeConver) getReqContainerEnvs(envsK8s []corev1.EnvVar) []base.ListMapItem {
+	envsReq := make([]base.ListMapItem, 0)
 	for _, item := range envsK8s {
-		envsReq = append(envsReq, pod_req.ListMapItem{
+		envsReq = append(envsReq, base.ListMapItem{
 			Key:   item.Name,
 			Value: item.Value,
 		})
@@ -89,11 +91,15 @@ func (k *K8s2RqeConver) getReqContainerResources(requirements corev1.ResourceReq
 func (k *K8s2RqeConver) getReqContainerVolumeMounts(volumeMountsK8s []corev1.VolumeMount) []pod_req.VolumeMount {
 	volumesReq := make([]pod_req.VolumeMount, 0)
 	for _, item := range volumeMountsK8s {
-		volumesReq = append(volumesReq, pod_req.VolumeMount{
-			MountName: item.Name,
-			MountPath: item.MountPath,
-			ReadOnly:  item.ReadOnly,
-		})
+		// 非 emptyDir 过滤
+		_, ok := k.volumeMap[item.Name]
+		if ok {
+			volumesReq = append(volumesReq, pod_req.VolumeMount{
+				MountName: item.Name,
+				MountPath: item.MountPath,
+				ReadOnly:  item.ReadOnly,
+			})
+		}
 	}
 	return volumesReq
 }
@@ -112,9 +118,9 @@ func (k *K8s2RqeConver) getReqContainerProbe(probeK8s *corev1.Probe) pod_req.Con
 		} else if probeK8s.HTTPGet != nil {
 			containerProbe.Type = probe_http
 			httpGet := probeK8s.HTTPGet
-			headersReq := make([]pod_req.ListMapItem, 0)
+			headersReq := make([]base.ListMapItem, 0)
 			for _, headerK8s := range httpGet.HTTPHeaders {
-				headersReq = append(headersReq, pod_req.ListMapItem{
+				headersReq = append(headersReq, base.ListMapItem{
 					Key:   headerK8s.Name,
 					Value: headerK8s.Value,
 				})
@@ -172,6 +178,10 @@ func (k *K8s2RqeConver) getReqVolumes(volumes []corev1.Volume) []pod_req.Volume 
 		if volume.EmptyDir == nil {
 			continue
 		}
+		if k.volumeMap == nil {
+			k.volumeMap = make(map[string]string)
+		}
+		k.volumeMap[volume.Name] = ""
 		volumesReq = append(volumesReq, pod_req.Volume{
 			Type: volume_type_emptydir,
 			Name: volume.Name,
@@ -180,10 +190,10 @@ func (k *K8s2RqeConver) getReqVolumes(volumes []corev1.Volume) []pod_req.Volume 
 	return volumesReq
 }
 
-func (k *K8s2RqeConver) getReqHostAliases(hostAlias []corev1.HostAlias) []pod_req.ListMapItem {
-	hostAliasReq := make([]pod_req.ListMapItem, 0)
+func (k *K8s2RqeConver) getReqHostAliases(hostAlias []corev1.HostAlias) []base.ListMapItem {
+	hostAliasReq := make([]base.ListMapItem, 0)
 	for _, alias := range hostAlias {
-		hostAliasReq = append(hostAliasReq, pod_req.ListMapItem{
+		hostAliasReq = append(hostAliasReq, base.ListMapItem{
 			Key:   alias.IP,
 			Value: strings.Join(alias.Hostnames, ","),
 		})
@@ -210,10 +220,10 @@ func (k *K8s2RqeConver) getReqNetworking(pod corev1.Pod) pod_req.NetWorking {
 	}
 }
 
-func (k *K8s2RqeConver) getReqLabels(data map[string]string) []pod_req.ListMapItem {
-	labels := make([]pod_req.ListMapItem, 0)
+func (k *K8s2RqeConver) getReqLabels(data map[string]string) []base.ListMapItem {
+	labels := make([]base.ListMapItem, 0)
 	for k, v := range data {
-		labels = append(labels, pod_req.ListMapItem{
+		labels = append(labels, base.ListMapItem{
 			Key:   k,
 			Value: v,
 		})

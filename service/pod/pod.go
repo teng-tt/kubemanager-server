@@ -35,8 +35,13 @@ func (p *PodService) CreateOrUpdate(podReq pod_req.Pod) (msg string, err error) 
 			errMsg := fmt.Sprintf("Poc[namespace=%s, name=%s]更新失败，detail：%s", k8sPod.Namespace, k8sPod.Name, err.Error())
 			return errMsg, err
 		}
-		// 删除
-		err = podApi.Delete(ctx, k8sPod.Name, metav1.DeleteOptions{})
+		// 删除 --强制删除，减少删除等待时间，防止前端等待删除超时
+		background := metav1.DeletePropagationBackground
+		var gracePeriodSeconds int64 = 0
+		err = podApi.Delete(ctx, k8sPod.Name, metav1.DeleteOptions{
+			GracePeriodSeconds: &gracePeriodSeconds,
+			PropagationPolicy:  &background,
+		})
 		if err != nil {
 			errMsg := fmt.Sprintf("Poc[namespace=%s, name=%s]更新失败，detail：%s", k8sPod.Namespace, k8sPod.Name, err.Error())
 			return errMsg, err
@@ -111,7 +116,7 @@ func (p *PodService) GetPodDetail(namespace, name string) (podReq pod_req.Pod, e
 	return
 }
 
-func (p *PodService) GetPodList(namespace string) (podList []pod_res.PodListItem, err error) {
+func (p *PodService) GetPodList(namespace, keyword string) (podList []pod_res.PodListItem, err error) {
 	ctx := context.TODO()
 	list, err := global.KubeConfigSet.CoreV1().Pods(namespace).List(ctx, metav1.ListOptions{})
 	if err != nil {
@@ -120,16 +125,19 @@ func (p *PodService) GetPodList(namespace string) (podList []pod_res.PodListItem
 	}
 	podList = make([]pod_res.PodListItem, 0)
 	for _, item := range list.Items {
-		podItem := podConvert.K8s2RqeConver.PodK8s2ItemRes(item)
-		podList = append(podList, podItem)
+		if strings.Contains(item.Name, keyword) {
+			podItem := podConvert.K8s2RqeConver.PodK8s2ItemRes(item)
+			podList = append(podList, podItem)
+		}
 	}
 
 	return podList, err
 }
 
 func (p *PodService) DeletePod(namespace, name string) error {
-	background := metav1.DeletePropagationBackground
-	var gracePeriodSeconds int64 = 0
+	// 删除 --强制删除，减少删除等待时间，防止前端等待删除超时
+	background := metav1.DeletePropagationBackground // 后台删除
+	var gracePeriodSeconds int64 = 0                 // 等待时间
 	return global.KubeConfigSet.CoreV1().Pods(namespace).Delete(context.TODO(), name, metav1.DeleteOptions{
 		GracePeriodSeconds: &gracePeriodSeconds,
 		PropagationPolicy:  &background,

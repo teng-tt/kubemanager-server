@@ -64,6 +64,7 @@ func (p *PodApi) CreateOrUpdatePod(c *gin.Context) {
 func (p *PodApi) GetPodListOrDetail(c *gin.Context) {
 	namespace := c.Param("namespace")
 	name := c.Query("name")
+	keyword := c.Query("keyword")
 	if name != "" {
 		detail, err := podService.GetPodDetail(namespace, name)
 		if err != nil {
@@ -72,7 +73,7 @@ func (p *PodApi) GetPodListOrDetail(c *gin.Context) {
 		}
 		response.SuccessWithDetailed(c, "获取Pod详情成功", detail)
 	} else {
-		podList, err := podService.GetPodList(namespace)
+		podList, err := podService.GetPodList(namespace, keyword)
 		if err != nil {
 			response.FailWithMessage(c, err.Error())
 			return

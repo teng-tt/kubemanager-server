@@ -5,6 +5,7 @@ import (
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
+	"kubmanager/model/base"
 	pod_req "kubmanager/model/pod/request"
 	"strconv"
 	"strings"
@@ -48,7 +49,7 @@ func (p *Req2K8sConvert) PodReq2K8s(podReq pod_req.Pod) *corev1.Pod {
 	}
 }
 
-func (p *Req2K8sConvert) getK8sHostAliases(podReqHostAliases []pod_req.ListMapItem) []corev1.HostAlias {
+func (p *Req2K8sConvert) getK8sHostAliases(podReqHostAliases []base.ListMapItem) []corev1.HostAlias {
 	podK8sHotsAliases := make([]corev1.HostAlias, 0)
 	for _, item := range podReqHostAliases {
 		podK8sHotsAliases = append(podK8sHotsAliases, corev1.HostAlias{
@@ -197,7 +198,7 @@ func (p *Req2K8sConvert) getK8sVolumeMount(podReqMounts []pod_req.VolumeMount) [
 	return podK8sVolumMounts
 }
 
-func (p *Req2K8sConvert) getK8sEnv(podReqEnv []pod_req.ListMapItem) []corev1.EnvVar {
+func (p *Req2K8sConvert) getK8sEnv(podReqEnv []base.ListMapItem) []corev1.EnvVar {
 	podK8sEnvs := make([]corev1.EnvVar, 0)
 	for _, item := range podReqEnv {
 		podK8sEnvs = append(podK8sEnvs, corev1.EnvVar{
@@ -209,7 +210,7 @@ func (p *Req2K8sConvert) getK8sEnv(podReqEnv []pod_req.ListMapItem) []corev1.Env
 }
 
 // Pod 请求 labels 转换为 k8s labels
-func (p *Req2K8sConvert) getK8sLabels(podReqLabels []pod_req.ListMapItem) map[string]string {
+func (p *Req2K8sConvert) getK8sLabels(podReqLabels []base.ListMapItem) map[string]string {
 	podK8sLabels := make(map[string]string)
 	for _, label := range podReqLabels {
 		podK8sLabels[label.Key] = label.Value
