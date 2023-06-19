@@ -1,6 +1,9 @@
 package request
 
-import "kubmanager/model/base"
+import (
+	corev1 "k8s.io/api/core/v1"
+	"kubmanager/model/base"
+)
 
 type Base struct {
 	Name          string             `json:"name"`          // 名称
@@ -112,10 +115,24 @@ type Container struct {
 	ReadinessProbe  ContainerProbe     `json:"readinessProbe"`  // 就绪探针
 }
 
+type NodeSelectorTermExpressions struct {
+	Key      string                      `json:"key"`
+	Operator corev1.NodeSelectorOperator `json:"operator"`
+	Value    string                      `json:"value"`
+}
+
+type NodeScheduling struct {
+	Type         string                        `json:"type"` // 调度类型 nodeName | nodeSelector | nodeAffinity
+	NodeName     string                        `json:"nodeName"`
+	NodeSelector []base.ListMapItem            `json:"nodeSelector"`
+	NodeAffinity []NodeSelectorTermExpressions `json:"nodeAffinity"`
+}
 type Pod struct {
-	Base           Base        `json:"base"`           // 基础定义信息
-	Volumes        []Volume    `json:"volumes"`        // 卷
-	NetWorking     NetWorking  `json:"netWorking"`     // 网络相关
-	InitContainers []Container `json:"initContainers"` // init containers,一定不以守护进程方式运行，用于容器数据配置初始化
-	Containers     []Container `json:"containers"`     // containers 守护进程方式运行、也可不以守护进程方式运行
+	Base           Base                `json:"base"`           // 基础定义信息
+	Tolerations    []corev1.Toleration `json:"tolerations"`    // 容忍
+	NodeScheduling NodeScheduling      `json:"nodeScheduling"` // 容器调度方式
+	Volumes        []Volume            `json:"volumes"`        // 卷
+	NetWorking     NetWorking          `json:"netWorking"`     // 网络相关
+	InitContainers []Container         `json:"initContainers"` // init containers,一定不以守护进程方式运行，用于容器数据配置初始化
+	Containers     []Container         `json:"containers"`     // containers 守护进程方式运行、也可不以守护进程方式运行
 }

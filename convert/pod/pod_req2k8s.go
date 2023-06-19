@@ -21,11 +21,59 @@ const (
 	volume_empty = "emptyDir"
 )
 
+const (
+	scheduling_nodename     = "nodeName"
+	scheduling_nodselector  = "nodeSelector"
+	scheduling_nodeaffinity = "nodeAffinity"
+	scheduling_nodeany      = "nodeAny"
+)
+
 type Req2K8sConvert struct {
+}
+
+func (p *Req2K8sConvert) getNodeK8sScheduling(podReq pod_req.Pod) (affinity *corev1.Affinity, nodeSelector map[string]string, nodeName string) {
+	nodeScheduling := podReq.NodeScheduling
+	switch nodeScheduling.Type {
+	case scheduling_nodename:
+		nodeName = nodeScheduling.NodeName
+	case scheduling_nodselector:
+		nodeSelectoMap := make(map[string]string)
+		for _, item := range nodeScheduling.NodeSelector {
+			nodeSelectoMap[item.Key] = item.Value
+		}
+		nodeSelector = nodeSelectoMap
+	case scheduling_nodeaffinity:
+		nodeSelectorTermExpressions := nodeScheduling.NodeAffinity
+		matchExpression := make([]corev1.NodeSelectorRequirement, 0)
+		for _, expression := range nodeSelectorTermExpressions {
+			matchExpression = append(matchExpression, corev1.NodeSelectorRequirement{
+				Key:      expression.Key,
+				Values:   strings.Split(expression.Value, ","),
+				Operator: expression.Operator,
+			})
+		}
+		affinity = &corev1.Affinity{
+			NodeAffinity: &corev1.NodeAffinity{
+				RequiredDuringSchedulingIgnoredDuringExecution: &corev1.NodeSelector{
+					NodeSelectorTerms: []corev1.NodeSelectorTerm{
+						{
+							MatchExpressions: matchExpression,
+						},
+					},
+				},
+			},
+		}
+	case scheduling_nodeany:
+		// do nothing
+	default:
+		// do nothing
+	}
+	return
 }
 
 // PodReq2K8s 将 pod 的请求格式的数据 转换为 k8s 结构数据
 func (p *Req2K8sConvert) PodReq2K8s(podReq pod_req.Pod) *corev1.Pod {
+	nodeAffinity, nodeSelector, nodeName := p.getNodeK8sScheduling(podReq)
 	labels := podReq.Base.Labels
 	k8sLabels := p.getK8sLabels(labels)
 	return &corev1.Pod{
@@ -35,6 +83,10 @@ func (p *Req2K8sConvert) PodReq2K8s(podReq pod_req.Pod) *corev1.Pod {
 			Labels:    k8sLabels,
 		},
 		Spec: corev1.PodSpec{
+			NodeName:       nodeName,
+			NodeSelector:   nodeSelector,
+			Affinity:       nodeAffinity,
+			Tolerations:    podReq.Tolerations,
 			InitContainers: p.getK8sContainers(podReq.InitContainers),
 			Containers:     p.getK8sContainers(podReq.Containers),
 			Volumes:        p.getK8sVolumes(podReq.Volumes),

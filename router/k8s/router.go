@@ -19,4 +19,6 @@ func (k *K8SRouter) InitK8SRouter(r *gin.Engine) {
 
 	// nodeScheduling
 	group.GET("/node", apiGroup.GetNodeDetailOrList)
+	group.POST("/node/label", apiGroup.UpdateNode)
+	group.POST("/node/taint", apiGroup.UpdateTaints)
 }

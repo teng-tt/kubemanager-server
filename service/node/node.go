@@ -2,13 +2,55 @@ package node
 
 import (
 	"context"
+	"encoding/json"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/types"
 	"kubmanager/global"
+	node_req "kubmanager/model/node/request"
 	node_res "kubmanager/model/node/response"
 	"strings"
 )
 
 type NodeService struct {
+}
+
+func (n *NodeService) UpdateNodeTaint(updateTaint node_req.UpdatedTaint) error {
+	patchData := map[string]any{
+		"spec": map[string]any{
+			"taints": updateTaint.Taints,
+		},
+	}
+	patchDataBytes, _ := json.Marshal(&patchData)
+	_, err := global.KubeConfigSet.CoreV1().Nodes().Patch(
+		context.TODO(),
+		updateTaint.Name,
+		types.StrategicMergePatchType,
+		patchDataBytes,
+		metav1.PatchOptions{},
+	)
+	return err
+}
+
+func (n *NodeService) UpdateNodeLabel(updateLabel node_req.UpdatedLabel) error {
+	labelsMap := make(map[string]string)
+	for _, label := range updateLabel.Labels {
+		labelsMap[label.Key] = label.Value
+	}
+	labelsMap["$patch"] = "replace"
+	patchData := map[string]any{
+		"metadata": map[string]any{
+			"labels": labelsMap,
+		},
+	}
+	patchDataBytes, _ := json.Marshal(&patchData)
+	_, err := global.KubeConfigSet.CoreV1().Nodes().Patch(
+		context.TODO(),
+		updateLabel.Name,
+		types.StrategicMergePatchType,
+		patchDataBytes,
+		metav1.PatchOptions{},
+	)
+	return err
 }
 
 func (n *NodeService) GteNodeDetail(nodeName string) (*node_res.Node, error) {

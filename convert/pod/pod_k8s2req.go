@@ -17,9 +17,49 @@ type K8s2RqeConver struct {
 	volumeMap map[string]string
 }
 
+func (k *K8s2RqeConver) getNodeReqScheduling(podK8s corev1.Pod) pod_req.NodeScheduling {
+	nodeScheduling := pod_req.NodeScheduling{
+		Type: scheduling_nodeany,
+	}
+	if podK8s.Spec.NodeSelector != nil {
+		nodeScheduling.Type = scheduling_nodselector
+		labels := make([]base.ListMapItem, 0)
+		for k, v := range podK8s.Spec.NodeSelector {
+			labels = append(labels, base.ListMapItem{
+				Key:   k,
+				Value: v,
+			})
+		}
+		nodeScheduling.NodeSelector = labels
+		return nodeScheduling
+	}
+	if podK8s.Spec.Affinity != nil {
+		nodeScheduling.Type = scheduling_nodeaffinity
+		term := podK8s.Spec.Affinity.NodeAffinity.RequiredDuringSchedulingIgnoredDuringExecution.NodeSelectorTerms[0]
+		matchExpressions := make([]pod_req.NodeSelectorTermExpressions, 0)
+		for _, expression := range term.MatchExpressions {
+			matchExpressions = append(matchExpressions, pod_req.NodeSelectorTermExpressions{
+				Key:      expression.Key,
+				Value:    strings.Join(expression.Values, ","),
+				Operator: expression.Operator,
+			})
+		}
+		nodeScheduling.NodeAffinity = matchExpressions
+		return nodeScheduling
+	}
+	if podK8s.Spec.NodeName != "" {
+		nodeScheduling.Type = scheduling_nodename
+		nodeScheduling.NodeName = podK8s.Spec.NodeName
+		return nodeScheduling
+	}
+	return nodeScheduling
+}
+
 func (k *K8s2RqeConver) PodK8s2Req(podK8s corev1.Pod) pod_req.Pod {
 	return pod_req.Pod{
 		Base:           k.getReqBase(podK8s),
+		Tolerations:    podK8s.Spec.Tolerations,
+		NodeScheduling: k.getNodeReqScheduling(podK8s),
 		NetWorking:     k.getReqNetworking(podK8s),
 		Volumes:        k.getReqVolumes(podK8s.Spec.Volumes),
 		Containers:     k.getReqContainers(podK8s.Spec.Containers),
