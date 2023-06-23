@@ -90,13 +90,27 @@ func (k *K8s2RqeConver) getReqContainerPorts(portsK8s []corev1.ContainerPort) []
 	return portsReq
 }
 
-func (k *K8s2RqeConver) getReqContainerEnvs(envsK8s []corev1.EnvVar) []base.ListMapItem {
-	envsReq := make([]base.ListMapItem, 0)
+func (k *K8s2RqeConver) getReqContainerEnvs(envsK8s []corev1.EnvVar) []pod_req.EnvVar {
+	envsReq := make([]pod_req.EnvVar, 0)
 	for _, item := range envsK8s {
-		envsReq = append(envsReq, base.ListMapItem{
-			Key:   item.Name,
-			Value: item.Value,
-		})
+		envVar := pod_req.EnvVar{
+			Name: item.Name,
+		}
+		if item.ValueFrom != nil {
+			if item.ValueFrom.ConfigMapKeyRef != nil {
+				envVar.Type = ref_type_configMap
+				envVar.Value = item.ValueFrom.ConfigMapKeyRef.Key
+				envVar.RefName = item.ValueFrom.ConfigMapKeyRef.Name
+			}
+			if item.ValueFrom.SecretKeyRef != nil {
+				envVar.Type = ref_type_secret
+				envVar.Value = item.ValueFrom.SecretKeyRef.Key
+				envVar.RefName = item.ValueFrom.SecretKeyRef.Name
+			}
+		} else {
+			envVar.Value = item.Value
+		}
+		envsReq = append(envsReq, envVar)
 	}
 	return envsReq
 }
@@ -192,6 +206,26 @@ func (k *K8s2RqeConver) getReqContainerProbe(probeK8s *corev1.Probe) pod_req.Con
 	return containerProbe
 }
 
+func (k *K8s2RqeConver) getReqContainerEnvsFrom(envsFromK8s []corev1.EnvFromSource) []pod_req.EnvsVarFromResource {
+	podReqEnvsFromList := make([]pod_req.EnvsVarFromResource, 0)
+	for _, envK8sItem := range envsFromK8s {
+		// 前缀通用
+		podReqEnvsFrom := pod_req.EnvsVarFromResource{
+			Prefix: envK8sItem.Prefix,
+		}
+		if envK8sItem.ConfigMapRef != nil {
+			podReqEnvsFrom.RefType = ref_type_configMap
+			podReqEnvsFrom.Name = envK8sItem.ConfigMapRef.Name
+		}
+		if envK8sItem.SecretRef != nil {
+			podReqEnvsFrom.RefType = ref_type_secret
+			podReqEnvsFrom.Name = envK8sItem.SecretRef.Name
+		}
+		podReqEnvsFromList = append(podReqEnvsFromList, podReqEnvsFrom)
+	}
+	return podReqEnvsFromList
+}
+
 func (k *K8s2RqeConver) getReqContainer(containerK8s corev1.Container) pod_req.Container {
 	return pod_req.Container{
 		Name:            containerK8s.Name,
@@ -203,6 +237,7 @@ func (k *K8s2RqeConver) getReqContainer(containerK8s corev1.Container) pod_req.C
 		Command:         containerK8s.Command,
 		Args:            containerK8s.Args,
 		Envs:            k.getReqContainerEnvs(containerK8s.Env),
+		EnvsFrom:        k.getReqContainerEnvsFrom(containerK8s.EnvFrom),
 		Privileged:      k.getReqContainerPrivileged(containerK8s.SecurityContext),
 		Resources:       k.getReqContainerResources(containerK8s.Resources),
 		VolumeMounts:    k.getReqContainerVolumeMounts(containerK8s.VolumeMounts),
