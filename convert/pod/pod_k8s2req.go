@@ -108,6 +108,7 @@ func (k *K8s2RqeConver) getReqContainerEnvs(envsK8s []corev1.EnvVar) []pod_req.E
 				envVar.RefName = item.ValueFrom.SecretKeyRef.Name
 			}
 		} else {
+			envVar.Type = "default"
 			envVar.Value = item.Value
 		}
 		envsReq = append(envsReq, envVar)
@@ -249,18 +250,56 @@ func (k *K8s2RqeConver) getReqContainer(containerK8s corev1.Container) pod_req.C
 
 func (k *K8s2RqeConver) getReqVolumes(volumes []corev1.Volume) []pod_req.Volume {
 	volumesReq := make([]pod_req.Volume, 0)
+	if k.volumeMap == nil {
+		k.volumeMap = make(map[string]string)
+	}
 	for _, volume := range volumes {
-		if volume.EmptyDir == nil {
+		//if volume.EmptyDir == nil {
+		//	continue
+		//}
+		var volumeReq *pod_req.Volume
+		if volume.EmptyDir != nil {
+			volumeReq = &pod_req.Volume{
+				Type: volume_empty,
+				Name: volume.Name,
+			}
+		}
+		if volume.ConfigMap != nil {
+			var optional bool
+			if volume.ConfigMap.Optional != nil {
+				optional = *volume.ConfigMap.Optional
+			}
+			volumeReq = &pod_req.Volume{
+				Type: volume_configMap,
+				Name: volume.Name,
+				ConfiMapRefVolume: pod_req.ConfiMapRefVolume{
+					Name:     volume.ConfigMap.Name,
+					Optional: optional,
+				},
+			}
+		}
+		if volume.Secret != nil {
+			var optional bool
+			if volume.Secret.Optional != nil {
+				optional = *volume.Secret.Optional
+			}
+			volumeReq = &pod_req.Volume{
+				Type: volume_secret,
+				Name: volume.Name,
+				SecretRefVolume: pod_req.SecretRefVolume{
+					Name:     volume.Secret.SecretName,
+					Optional: optional,
+				},
+			}
+		}
+		if volumeReq == nil {
 			continue
 		}
 		if k.volumeMap == nil {
 			k.volumeMap = make(map[string]string)
 		}
 		k.volumeMap[volume.Name] = ""
-		volumesReq = append(volumesReq, pod_req.Volume{
-			Type: volume_type_emptydir,
-			Name: volume.Name,
-		})
+		volumesReq = append(volumesReq, *volumeReq)
 	}
 	return volumesReq
 }

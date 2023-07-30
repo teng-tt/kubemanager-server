@@ -73,3 +73,21 @@ Secret
 Pod管理接口改动：
 - [x] 新增ConfigMap和ConfigMapKeY
 - [x] 新增Secret和SecretKey
+
+### 4. k8s卷管理接口
+PersistentVolume
+- [x] 创建
+- [x] 删除
+- [x] 查询--列表 
+
+PersistentVolumeClaim
+- [x] 创建
+- [x] 删除
+- [x] 查询--列表 
+
+StorageClass
+- [x] 创建
+- [x] 删除
+- [x] 查询--列表 
+
+[ ] Pod管理 （卷管理部分的逻辑,新增存储卷支持，支持`emptydir|confiMap|secret|hostPath|downward|pvc`）

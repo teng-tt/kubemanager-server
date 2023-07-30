@@ -15,7 +15,7 @@ func (s *SecretApi) CreateOrUpdateSecret(c *gin.Context) {
 		response.FailWithMessage(c, "参数解析失败！")
 		return
 	}
-	err := secretServicer.CreateOrUpdateSecret(secretReq)
+	err := secretService.CreateOrUpdateSecret(secretReq)
 	if err != nil {
 		response.FailWithDetailed(c, "secret配置创建或更新失败！", err.Error())
 		return
@@ -28,7 +28,7 @@ func (s *SecretApi) GetSecretListOrDetail(c *gin.Context) {
 	namespace := c.Param("namespace")
 	keyword := c.Query("keyword")
 	if name != "" {
-		secretDetailRes, err := secretServicer.GetSecretDetail(namespace, namespace)
+		secretDetailRes, err := secretService.GetSecretDetail(namespace, namespace)
 		if err != nil {
 			response.SuccessWithDetailed(c, "查询secret失败！", err.Error())
 			return
@@ -36,7 +36,7 @@ func (s *SecretApi) GetSecretListOrDetail(c *gin.Context) {
 		response.SuccessWithDetailed(c, "查询secret成功！", secretDetailRes)
 		return
 	}
-	secretResList, err := secretServicer.GetSecretList(name, keyword)
+	secretResList, err := secretService.GetSecretList(name, keyword)
 	if err != nil {
 		response.SuccessWithDetailed(c, "查询secret列表失败！", err.Error())
 		return
@@ -46,7 +46,7 @@ func (s *SecretApi) GetSecretListOrDetail(c *gin.Context) {
 }
 
 func (s *SecretApi) DeleteSecret(c *gin.Context) {
-	err := secretServicer.DeleteSecret(c.Param("namespace"), c.Param("name"))
+	err := secretService.DeleteSecret(c.Param("namespace"), c.Param("name"))
 	if err != nil {
 		response.FailWithDetailed(c, "secret配置删除失败！", err.Error())
 		return

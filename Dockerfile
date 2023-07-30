@@ -14,9 +14,9 @@ FROM apline:latest
 LABEL MAINTAINER = "teng-tt"
 
 WORKDIR /go/src/kubmanager/server
-COPY --from=0 /go/src/kubmanaer/server/config.yaml ./config.yaml
-COPY --from=0 /go/src/kubmanaer/server/.kube/config ./.kube/config
-COPY --from=0 /go/src/kubmanaer/server/server ./
+COPY --from=builder /go/src/kubmanaer/server/config.yaml ./config.yaml
+COPY --from=builder /go/src/kubmanaer/server/.kube/config ./.kube/config
+COPY --from=builder /go/src/kubmanaer/server/server ./
 
 EXPOSE 8080
 ENTRYPOINT ./server

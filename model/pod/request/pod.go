@@ -12,9 +12,41 @@ type Base struct {
 	RestartPolicy string             `json:"restartPolicy"` // 重启策略 Always | Never | On-Failure
 }
 
+type ConfiMapRefVolume struct {
+	Name     string `json:"name"`
+	Optional bool   `json:"optional"`
+}
+
+type SecretRefVolume struct {
+	Name     string `json:"name"`
+	Optional bool   `json:"optional"`
+}
+
+type HostPathVolume struct {
+	Type corev1.HostPathType `json:"type"`
+	Path string              `json:"path"` // 宿主机路径
+}
+
+type DownwardAPIVolumeItem struct {
+	Path         string `json:"path"`
+	FiledRefPath string `json:"filedRefPath"`
+}
+
+type DownwardAPIVolume struct {
+	Items []DownwardAPIVolumeItem `json:"item"`
+}
+
+type PVCVolume struct {
+	Name string `json:"name"` // pvc name
+}
 type Volume struct {
-	Name string `json:"name"`
-	Type string `json:"type"`
+	Name              string            `json:"name"`
+	Type              string            `json:"type"` // emptydir | confiMap | secret | hostPath | downward | pvc
+	ConfiMapRefVolume ConfiMapRefVolume `json:"confiMapRefVolume"`
+	SecretRefVolume   SecretRefVolume   `json:"secretRefVolume"`
+	HostPathVolume    HostPathVolume    `json:"hostPathVolume"`
+	DownwardAPIVolume DownwardAPIVolume `json:"downwardAPIVolume"`
+	PVCVolume         PVCVolume         `json:"PVCVolume"`
 }
 
 // hostNetwork: false

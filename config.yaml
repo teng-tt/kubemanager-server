@@ -1,2 +1,3 @@
 system:
   addr: ":8080"
+  provisioner: "cluster.local/nfs-subdir-external-provisioner,"
