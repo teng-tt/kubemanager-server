@@ -11,6 +11,7 @@ import (
 	pvc_resp "kubmanager/model/pvc/response"
 	"kubmanager/utils"
 	"strconv"
+	"strings"
 )
 
 type PVCService struct {
@@ -36,6 +37,9 @@ func (p *PVCService) CreatePVC(pvcReq pvc_req.PersistentVolumeClaim) error {
 			StorageClassName: &pvcReq.StorageClassName,
 		},
 	}
+	if pvc.Spec.StorageClassName != nil {
+		pvc.Spec.Selector = nil
+	}
 	ctx := context.TODO()
 	_, err := global.KubeConfigSet.CoreV1().PersistentVolumeClaims(pvc.Namespace).
 		Create(ctx, &pvc, metav1.CreateOptions{})
@@ -48,7 +52,7 @@ func (p *PVCService) DeletePVC(namespace, name string) error {
 	return err
 }
 
-func (p *PVCService) GetPVCList(namespace string) ([]pvc_resp.PersistentVolumeClaim, error) {
+func (p *PVCService) GetPVCList(namespace, keyword string) ([]pvc_resp.PersistentVolumeClaim, error) {
 	pvcResList := make([]pvc_resp.PersistentVolumeClaim, 0)
 	pvcList, err := global.KubeConfigSet.CoreV1().PersistentVolumeClaims(namespace).
 		List(context.TODO(), metav1.ListOptions{})
@@ -57,6 +61,9 @@ func (p *PVCService) GetPVCList(namespace string) ([]pvc_resp.PersistentVolumeCl
 	}
 	for _, item := range pvcList.Items {
 		// item -> response
+		if !strings.Contains(item.Name, keyword) {
+			continue
+		}
 		matchLabels := make([]base.ListMapItem, 0)
 		if item.Spec.Selector != nil {
 			matchLabels = utils.ToList(item.Spec.Selector.MatchLabels)

@@ -36,7 +36,7 @@ func (p *PVCApi) DeletePVC(c *gin.Context) {
 
 func (p *PVCApi) GetPVCList(c *gin.Context) {
 	namespace := c.Param("namespace")
-	pvcResList, err := pvcService.GetPVCList(namespace)
+	pvcResList, err := pvcService.GetPVCList(namespace, c.Query("keyword"))
 	if err != nil {
 		response.FailWithMessage(c, err.Error())
 		return

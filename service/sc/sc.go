@@ -54,7 +54,7 @@ func (s *SCService) DeleteSc(name string) error {
 	return err
 }
 
-func (s *SCService) GetScList() ([]scResp.StorageClass, error) {
+func (s *SCService) GetScList(keyword string) ([]scResp.StorageClass, error) {
 	scList, err := global.KubeConfigSet.StorageV1().StorageClasses().
 		List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
@@ -62,6 +62,9 @@ func (s *SCService) GetScList() ([]scResp.StorageClass, error) {
 	}
 	scRespList := make([]scResp.StorageClass, 0)
 	for _, item := range scList.Items {
+		if !strings.Contains(item.Name, keyword) {
+			continue
+		}
 		// item -> response
 		var allowVolumeExpansion bool
 		if item.AllowVolumeExpansion != nil {

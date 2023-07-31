@@ -43,4 +43,10 @@ func (k *K8SRouter) InitK8SRouter(r *gin.Engine) {
 	group.POST("/sc", apiGroup.CreateSc)
 	group.GET("/sc/:namespace", apiGroup.GetScList)
 	group.DELETE("/sc/:namespace/:name", apiGroup.DeleteSc)
+	// SVC
+	initSvcRoute(group)
+	// Ingress
+	initIngressRouter(group)
+	// IngressRouter
+	initIngRouteRouter(group)
 }

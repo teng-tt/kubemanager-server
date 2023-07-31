@@ -14,6 +14,9 @@ type ApiGroup struct {
 	PVApi
 	PVCApi
 	SCApi
+	SVCApi
+	IngressApi
+	IngressRouteApi
 }
 
 var podValidate = validate.VaildateGroupApp.PodValidate
@@ -24,3 +27,5 @@ var secretService = service.ServiceGroupApp.SecretServiceGroup.SecretService
 var pvService = service.ServiceGroupApp.PvServiceGroup.PvService
 var pvcService = service.ServiceGroupApp.PvcServiceGroup.PVCService
 var scService = service.ServiceGroupApp.SCServiceGroup.SCService
+var svcService = service.ServiceGroupApp.SvcServiceGroup.Service
+var ingressService = service.ServiceGroupApp.IngressServiceGroup.IngresService

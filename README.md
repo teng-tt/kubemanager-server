@@ -30,7 +30,7 @@ go语言开发的的k8s集群管理工具
 
 ## 项目接口开发
 
-### 1. Pod管理接口开发
+### 1. Pod管理接口
 
 - [x] 命名空间列表接口
 - [x] Pod创建
@@ -48,7 +48,7 @@ go语言开发的的k8s集群管理工具
   -  pod删除等待时间不确定，改为强制删除，减少删除等待时间，防止前端删除超时
 - pod列表支持关键字搜索
 
-### 2. NodeScheduling接口开发
+### 2. NodeScheduling接口
 - [x] node列表/详情(kubectl get nodes / kubectl describe node -node-x)
 - [x] node标签管理(kubectl label node node-x label-x=label-value-x)
     - 所有的标签上传
@@ -90,4 +90,29 @@ StorageClass
 - [x] 删除
 - [x] 查询--列表 
 
-[ ] Pod管理 （卷管理部分的逻辑,新增存储卷支持，支持`emptydir|confiMap|secret|hostPath|downward|pvc`）
+pod管理接口改动:
+- [x] Pod管理 (卷管理部分逻辑新增存储卷支持，支持`emptydir|confiMap|secret|hostPath|downward|pvc`)
+---
+优化点：
+- [x] downward fileRefPath没有显示
+- [x] PVC选择PV或SC只能二选一
+- [x] SC PVC PV 添加keyword搜索字段
+- [x] PV显示StorageClassName字段
+
+### K8S服务发现接口
+
+Service
+- [x] 创建/更新
+- [x] 删除
+- [x] 查询 (列表和详情)
+
+Ingress
+- [x] 创建/更新
+- [x] 删除
+- [x] 查询 (列表和详情)
+
+IngressRoute
+- [ ] 创建/更新
+- [ ] 删除
+- [x] 查询 (列表和详情)
+- [ ] Middleware的查询接口

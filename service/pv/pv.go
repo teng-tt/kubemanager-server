@@ -11,6 +11,7 @@ import (
 	pv_resp "kubmanager/model/pv/response"
 	"kubmanager/utils"
 	"strconv"
+	"strings"
 )
 
 type PvService struct {
@@ -53,7 +54,7 @@ func (p *PvService) DeletePV(_ string, name string) error {
 	return err
 }
 
-func (p *PvService) GetPvList() ([]pv_resp.PersistentVolume, error) {
+func (p *PvService) GetPvList(keyword string) ([]pv_resp.PersistentVolume, error) {
 	pvList, err := global.KubeConfigSet.CoreV1().PersistentVolumes().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
 		return nil, err
@@ -61,6 +62,9 @@ func (p *PvService) GetPvList() ([]pv_resp.PersistentVolume, error) {
 	pvResList := make([]pv_resp.PersistentVolume, 0)
 	for _, item := range pvList.Items {
 		// k8s -> response
+		if !strings.Contains(item.Name, keyword) {
+			continue
+		}
 		claim := ""
 		ref := item.Spec.ClaimRef
 		if ref != nil {
@@ -74,7 +78,7 @@ func (p *PvService) GetPvList() ([]pv_resp.PersistentVolume, error) {
 			ReClaimPolicy:    item.Spec.PersistentVolumeReclaimPolicy,
 			Status:           item.Status.Phase,
 			Claim:            claim,
-			StorageClassName: "", // todo
+			StorageClassName: item.Spec.StorageClassName, // 当PV是通过SC创建时，会有该字段
 			Age:              item.CreationTimestamp.UnixMilli(),
 			Reason:           item.Status.Reason,
 		}

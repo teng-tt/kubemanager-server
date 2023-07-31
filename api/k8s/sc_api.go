@@ -34,7 +34,7 @@ func (s *SCApi) DeleteSc(c *gin.Context) {
 }
 
 func (s *SCApi) GetScList(c *gin.Context) {
-	scRespList, err := scService.GetScList()
+	scRespList, err := scService.GetScList(c.Query("keyword"))
 	if err != nil {
 		response.FailWithMessage(c, err.Error())
 		return
