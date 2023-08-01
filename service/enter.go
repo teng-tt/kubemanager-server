@@ -3,6 +3,7 @@ package service
 import (
 	"kubmanager/service/configmap"
 	"kubmanager/service/ingress"
+	"kubmanager/service/ingroute"
 	"kubmanager/service/node"
 	"kubmanager/service/pod"
 	"kubmanager/service/pv"
@@ -22,6 +23,7 @@ type ServiceGroup struct {
 	SCServiceGroup        sc.ServiceGroup
 	SvcServiceGroup       svc.ServiceGroup
 	IngressServiceGroup   ingress.ServiceGroup
+	IngRouteServiceGroup  ingroute.ServiceGroup
 }
 
 var ServiceGroupApp = new(ServiceGroup)

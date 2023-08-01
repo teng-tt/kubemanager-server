@@ -29,3 +29,4 @@ var pvcService = service.ServiceGroupApp.PvcServiceGroup.PVCService
 var scService = service.ServiceGroupApp.SCServiceGroup.SCService
 var svcService = service.ServiceGroupApp.SvcServiceGroup.Service
 var ingressService = service.ServiceGroupApp.IngressServiceGroup.IngresService
+var ingrouteService = service.ServiceGroupApp.IngRouteServiceGroup.IngressRouteService

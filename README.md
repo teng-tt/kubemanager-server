@@ -111,8 +111,9 @@ Ingress
 - [x] 删除
 - [x] 查询 (列表和详情)
 
-IngressRoute
-- [ ] 创建/更新
-- [ ] 删除
+IngressRoute(traefik的自定义资源)
+- [x] 创建/更新
+- [x] 删除
 - [x] 查询 (列表和详情)
-- [ ] Middleware的查询接口
+- [x] Middleware的查询接口
+> 自定义资源接口详情参考文档： https://github.com/kubernetes-client/python/blob/master/kubernetes/README.md
