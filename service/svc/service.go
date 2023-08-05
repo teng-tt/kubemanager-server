@@ -85,11 +85,12 @@ func (s *Service) GetSVCList(namespace, keyword string) ([]svcRes.ServiceRes, er
 	return serviceResList, err
 }
 
-func (s *Service) GetSVCDetail(namespace, name string) (*svcReq.Service, error) {
+func (s *Service) GetSVCDetail(namespace, name string) (svcReq.Service, error) {
 	// 查询详情
+	var serviceReq svcReq.Service
 	serviceK8s, err := global.KubeConfigSet.CoreV1().Services(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
-		return nil, err
+		return serviceReq, err
 	}
 	servicePorts := make([]svcReq.ServicePort, 0)
 	for _, item := range serviceK8s.Spec.Ports {
@@ -100,7 +101,7 @@ func (s *Service) GetSVCDetail(namespace, name string) (*svcReq.Service, error) 
 			NodePort:   item.NodePort,
 		})
 	}
-	serviceReq := svcReq.Service{
+	serviceReq = svcReq.Service{
 		Name:      serviceK8s.Name,
 		Namespace: serviceK8s.Namespace,
 		Labels:    utils.ToList(serviceK8s.Labels),
@@ -108,5 +109,5 @@ func (s *Service) GetSVCDetail(namespace, name string) (*svcReq.Service, error) 
 		Selector:  utils.ToList(serviceK8s.Spec.Selector),
 		Ports:     servicePorts,
 	}
-	return &serviceReq, err
+	return serviceReq, err
 }

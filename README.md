@@ -99,7 +99,7 @@ pod管理接口改动:
 - [x] SC PVC PV 添加keyword搜索字段
 - [x] PV显示StorageClassName字段
 
-### K8S服务发现接口
+### 5. k8s服务发现接口
 
 Service
 - [x] 创建/更新
@@ -117,3 +117,30 @@ IngressRoute(traefik的自定义资源)
 - [x] 查询 (列表和详情)
 - [x] Middleware的查询接口
 > 自定义资源接口详情参考文档： https://github.com/kubernetes-client/python/blob/master/kubernetes/README.md
+
+### 6. k8s工作负载
+
+StatefulSet
+- [x] 创建/更新
+- [x] 删除
+- [x] 查询 (列表和详情)
+
+Deployment
+- [x] 创建/更新
+- [x] 删除
+- [x] 查询 (列表和详情)
+
+DaemonSet
+- [x] 创建/更新
+- [x] 删除
+- [x] 查询 (列表和详情)
+
+Job
+- [x] 创建/更新
+- [x] 删除
+- [x] 查询 (列表和详情)
+
+CronJob
+- [x] 创建/更新
+- [x] 删除
+- [x] 查询 (列表和详情)

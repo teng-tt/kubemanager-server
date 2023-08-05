@@ -4,6 +4,7 @@ go 1.19
 
 require (
 	github.com/gin-gonic/gin v1.8.1
+	github.com/onsi/gomega v1.7.0
 	github.com/spf13/viper v1.13.0
 	k8s.io/api v0.20.4
 	k8s.io/apimachinery v0.20.4

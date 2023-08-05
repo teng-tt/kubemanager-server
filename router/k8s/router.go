@@ -49,4 +49,8 @@ func (k *K8SRouter) InitK8SRouter(r *gin.Engine) {
 	initIngressRouter(group)
 	// IngressRouter
 	initIngRouteRouter(group)
+	// StatefulSetRouter
+	initStatefulSetRouter(group)
+	// DeploymentRouter
+	initDeploymentRouter(group)
 }
