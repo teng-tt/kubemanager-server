@@ -19,6 +19,7 @@ type ApiGroup struct {
 	IngressRouteApi
 	StatefulSetApi
 	DeploymentApi
+	JoApi
 }
 
 var podValidate = validate.VaildateGroupApp.PodValidate
@@ -34,3 +35,4 @@ var ingressService = service.ServiceGroupApp.IngressServiceGroup.IngresService
 var ingrouteService = service.ServiceGroupApp.IngRouteServiceGroup.IngressRouteService
 var statefulsetService = service.ServiceGroupApp.StatefulSetServiceGroup.StatefulSetService
 var deploymentService = service.ServiceGroupApp.DeploymentService.DeploymentService
+var jobService = service.ServiceGroupApp.JobService.JobService

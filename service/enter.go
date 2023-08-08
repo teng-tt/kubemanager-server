@@ -5,6 +5,7 @@ import (
 	"kubmanager/service/deployment"
 	"kubmanager/service/ingress"
 	"kubmanager/service/ingroute"
+	"kubmanager/service/job"
 	"kubmanager/service/node"
 	"kubmanager/service/pod"
 	"kubmanager/service/pv"
@@ -28,6 +29,7 @@ type ServiceGroup struct {
 	IngRouteServiceGroup    ingroute.ServiceGroup
 	StatefulSetServiceGroup statefulset.ServiceGroup
 	DeploymentService       deployment.ServiceGroup
+	JobService              job.ServiceGroup
 }
 
 var ServiceGroupApp = new(ServiceGroup)

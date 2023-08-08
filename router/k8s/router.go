@@ -53,4 +53,6 @@ func (k *K8SRouter) InitK8SRouter(r *gin.Engine) {
 	initStatefulSetRouter(group)
 	// DeploymentRouter
 	initDeploymentRouter(group)
+	// JobRouter
+	initJobRouter(group)
 }

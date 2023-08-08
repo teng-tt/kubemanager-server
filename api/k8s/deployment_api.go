@@ -53,6 +53,6 @@ func (d *DeploymentApi) GetDeployDetailOrList(c *gin.Context) {
 			response.FailWithMessage(c, err.Error())
 			return
 		}
-		response.SuccessWithDetailed(c, "deployment!", deploymentRespInfo)
+		response.SuccessWithDetailed(c, "查询deployment成功!", deploymentRespInfo)
 	}
 }
