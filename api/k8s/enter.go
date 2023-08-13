@@ -20,6 +20,7 @@ type ApiGroup struct {
 	StatefulSetApi
 	DeploymentApi
 	JoApi
+	CronJobApi
 }
 
 var podValidate = validate.VaildateGroupApp.PodValidate
@@ -36,3 +37,4 @@ var ingrouteService = service.ServiceGroupApp.IngRouteServiceGroup.IngressRouteS
 var statefulsetService = service.ServiceGroupApp.StatefulSetServiceGroup.StatefulSetService
 var deploymentService = service.ServiceGroupApp.DeploymentService.DeploymentService
 var jobService = service.ServiceGroupApp.JobService.JobService
+var cronJobService = service.ServiceGroupApp.CronJobService.CronjobService

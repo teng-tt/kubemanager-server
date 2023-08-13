@@ -2,6 +2,7 @@ package service
 
 import (
 	"kubmanager/service/configmap"
+	"kubmanager/service/cronjob"
 	"kubmanager/service/deployment"
 	"kubmanager/service/ingress"
 	"kubmanager/service/ingroute"
@@ -30,6 +31,7 @@ type ServiceGroup struct {
 	StatefulSetServiceGroup statefulset.ServiceGroup
 	DeploymentService       deployment.ServiceGroup
 	JobService              job.ServiceGroup
+	CronJobService          cronjob.ServiceGroup
 }
 
 var ServiceGroupApp = new(ServiceGroup)
