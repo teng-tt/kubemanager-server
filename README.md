@@ -144,3 +144,21 @@ CronJob
 - [x] 创建/更新
 - [x] 删除
 - [x] 查询 (列表和详情)
+
+### 7. k8s认证与授权
+在集群内初始化，不需要知道.kube/config
+
+ServiceAccount
+- [x] 创建
+- [x] 删除
+- [x] 查询(列表)
+
+Role/ClusterRole
+- [x] 创建/更新
+- [x] 删除
+- [x] 查询(详情/列表)
+
+RoleBinding/ClusterRoleBinding
+- [x] 创建/更新
+- [x] 删除
+- [x] 查询(详情/列表)

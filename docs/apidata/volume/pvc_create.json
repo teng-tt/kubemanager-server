@@ -1,0 +1,20 @@
+{
+  "name": "test",
+  "namespace": "test",
+  "labels": [
+    {
+      "key": "pvc",
+      "value": "pvc01"
+    }
+  ],
+  "selector": [
+    {
+      "key": "pv",
+      "value": "pv01"
+    }
+  ],
+  "accessModes": [
+    "ReadWriteOnce"
+  ],
+  "capacity": 100
+}

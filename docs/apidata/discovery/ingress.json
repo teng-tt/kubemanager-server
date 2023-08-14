@@ -1,0 +1,33 @@
+{
+  "name": "test-ingress",
+  "namespace": "test",
+  "labels": [
+    {
+      "key": "testKey",
+      "value": "testValue"
+    }
+  ],
+  "rules": [
+    {
+      "host": "foo.bar.cn.test",
+      "value": {
+        "http": {
+          "paths": [
+            {
+              "path": "/",
+              "pathType": "Prefix",
+              "backend": {
+                "service": {
+                  "name": "svc-web",
+                  "port": {
+                    "number": 80
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

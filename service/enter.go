@@ -11,6 +11,7 @@ import (
 	"kubmanager/service/pod"
 	"kubmanager/service/pv"
 	"kubmanager/service/pvc"
+	"kubmanager/service/rbac"
 	"kubmanager/service/sc"
 	"kubmanager/service/secret"
 	"kubmanager/service/statefulset"
@@ -32,6 +33,7 @@ type ServiceGroup struct {
 	DeploymentService       deployment.ServiceGroup
 	JobService              job.ServiceGroup
 	CronJobService          cronjob.ServiceGroup
+	RbacService             rbac.ServiceGroup
 }
 
 var ServiceGroupApp = new(ServiceGroup)

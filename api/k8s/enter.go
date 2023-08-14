@@ -21,6 +21,7 @@ type ApiGroup struct {
 	DeploymentApi
 	JoApi
 	CronJobApi
+	RbacApi
 }
 
 var podValidate = validate.VaildateGroupApp.PodValidate
@@ -38,3 +39,4 @@ var statefulsetService = service.ServiceGroupApp.StatefulSetServiceGroup.Statefu
 var deploymentService = service.ServiceGroupApp.DeploymentService.DeploymentService
 var jobService = service.ServiceGroupApp.JobService.JobService
 var cronJobService = service.ServiceGroupApp.CronJobService.CronjobService
+var rbacService = service.ServiceGroupApp.RbacService.RbacServiceApi

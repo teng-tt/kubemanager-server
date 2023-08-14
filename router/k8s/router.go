@@ -57,4 +57,6 @@ func (k *K8SRouter) InitK8SRouter(r *gin.Engine) {
 	initJobRouter(group)
 	// CronJobRouter
 	initCronjobRouter(group)
+	// RBACRouter
+	initRBACRouter(group)
 }

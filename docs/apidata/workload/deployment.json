@@ -1,0 +1,91 @@
+{
+  "base": {
+    "name": "nginx-deployment",
+    "namespace": "test",
+    "labels": [
+      {
+        "key": "app",
+        "value": "nginx-deployment"
+      }
+    ],
+    "selector": [
+      {
+        "key": "app",
+        "value": "nginx-deployment-tp"
+      }
+    ],
+    "replicas": 2
+  },
+  "template": {
+    "netWorking": {
+      "hostNetwork": true,
+      "hostName": "test",
+      "dnsPolicy": "Default",
+      "dnsConfig": {
+        "nameservers": [
+          "8.8.8.8"
+        ]
+      },
+      "hostAliases": [
+        {
+          "key": "192.168.1.17",
+          "value": "foo.bar,foo2.bar"
+        }
+      ]
+    },
+    "base": {
+      "labels": [
+        {
+          "key": "app",
+          "value": "nginx-deployment-tp"
+        }
+      ],
+      "restartPolicy": "Always"
+    },
+    "initContainers": [
+      {
+        "name": "busybox-init",
+        "image": "busybox",
+        "imagePullPolicy": "IfNotPresent",
+        "command": [
+          "echo"
+        ],
+        "args": [
+          "hello world"
+        ]
+      }
+    ],
+    "containers": [
+      {
+        "name": "nginx",
+        "image": "nginx",
+        "imagePullPolicy": "IfNotPresent",
+        "livenessProbe": {
+          "enable": true,
+          "type": "tcp",
+          "tcpSocket": {
+            "host": "",
+            "port": 80
+          },
+          "initialDelaySeconds": 10,
+          "periodSeconds": 5,
+          "timeoutSeconds": 10,
+          "successThreshold": 1,
+          "failureThreshold": 10
+        },
+        "envs": [
+          {
+            "name": "foo",
+            "value": "bar"
+          }
+        ]
+      },
+      {
+        "name": "busybox",
+        "image": "busybox",
+        "imagePullPolicy": "IfNotPresent",
+        "tty": true
+      }
+    ]
+  }
+}

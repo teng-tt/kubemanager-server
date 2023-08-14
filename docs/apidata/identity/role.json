@@ -1,0 +1,19 @@
+{
+  "name": "test",
+  "namespace": "test",
+  "labels": [
+    {
+      "key": "role",
+      "value": "test"
+    }
+  ],
+  "rules": [
+    {
+      "apiGroups": [""],
+      "verbs": ["get","list"],
+      "resources": ["pods"],
+      "resourceNames": ["web"],
+      "nonResourceURLs": []
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "base": {
+    "schedule": "* * * * *",
+    "concurrencyPolicy": "Allow",
+    "successfulJobsHistoryLimit": 3,
+    "failedJobsHistoryLimit": 1,
+    "name": "nginx-cronjob",
+    "namespace": "test",
+    "labels": [
+      {
+        "key": "app",
+        "value": "nginx-cronjob"
+      }
+    ],
+    "jobBase": {
+      "completions": 1,
+      "backoffLimit": 1
+    }
+  },
+  "template": {
+    "base": {
+      "labels": [
+        {
+          "key": "app",
+          "value": "nginx-cronjob-tp"
+        }
+      ],
+      "restartPolicy": "Never"
+    },
+    "containers": [
+      {
+        "name": "busybox",
+        "image": "busybox",
+        "imagePullPolicy": "IfNotPresent",
+        "command": [
+          "/bin/sh",
+          "-c",
+          "echo Hello Job"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "name": "test-svc",
+  "namespace": "test",
+  "labels": [{
+    "key": "test",
+    "value": "svc"
+  }],
+  "selector": [{
+    "key": "app",
+    "value": "web"
+  }],
+  "ports": [{
+    "name": "http",
+    "targetPort": 80,
+    "port": 80,
+    "nodePort": 0
+  }]
+}

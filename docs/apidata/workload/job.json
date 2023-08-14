@@ -1,0 +1,37 @@
+{
+  "base": {
+    "name": "nginx-job",
+    "namespace": "test",
+    "labels": [
+      {
+        "key": "app",
+        "value": "nginx-job"
+      }
+    ],
+    "completions": 1,
+    "backoffLimit": 1
+  },
+  "template": {
+    "base": {
+      "labels": [
+        {
+          "key": "app",
+          "value": "nginx-job-tp"
+        }
+      ],
+      "restartPolicy": "Never"
+    },
+    "containers": [
+      {
+        "name": "busybox",
+        "image": "busybox",
+        "imagePullPolicy": "IfNotPresent",
+        "command": [
+          "/bin/sh",
+          "-c",
+          "echo Hello Job"
+        ]
+      }
+    ]
+  }
+}

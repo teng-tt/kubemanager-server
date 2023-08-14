@@ -1,0 +1,32 @@
+{
+  "name": "test",
+  "namespace": "test",
+  "labels": [
+    {
+      "key": "testKey",
+      "value": "testVal"
+    }
+  ],
+  "entryPoints": [
+    "http"
+  ],
+  "routes": [
+    {
+      "match": "Host(`foo.bar.cn`) && PathPrefix(`/web`)",
+      "kind": "Rule",
+      "services": [
+        {
+          "name": "svc-web",
+          "port": 80
+        }
+      ],
+      "middlewares": [
+        {
+          "name": "test-auth"
+        },{
+          "name": "strip-prefix"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "test-rb",
+  "namespace": "test",
+  "labels": [
+    {
+      "key": "name",
+      "value": "rb"
+    }
+  ],
+  "roleRef": "test",
+  "subjects": [
+    {
+      "name": "test",
+      "namespace": "test"
+    }
+  ]
+}
