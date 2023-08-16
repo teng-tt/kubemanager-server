@@ -10,5 +10,6 @@ func main() {
 	r := initiallize.Routers()
 	initiallize.Viper()
 	initiallize.K8SWithDiscovery()
+	initiallize.InitHarborClient()
 	panic(r.Run(global.CONF.System.Addr))
 }

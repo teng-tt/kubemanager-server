@@ -162,3 +162,15 @@ RoleBinding/ClusterRoleBinding
 - [x] 创建/更新
 - [x] 删除
 - [x] 查询(详情/列表)
+
+### 8. k8s数据备份crd+operator开发
+通过kubebuilder脚手架开发数据备份服务 \
+实现按指定时间与间隔，将数据源备份到目标存储源 \
+此处配置的数据源为mysql8.0, 目标存储源为oss 
+
+### 9. kubmanager 整合 Harbor
+- [x] 集成HarborAPI
+- [x] Projects 列表查询(分页|模糊查询)
+- [x] Repositories 列表查询(分页|模糊查询)
+- [x] Artifacts 列表查询(分页|模糊查询)
+- [x] 镜像匹配接口(用户Pod输入镜像信息时，自动匹配)

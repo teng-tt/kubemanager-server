@@ -1,3 +1,10 @@
 system:
   addr: ":8080"
   provisioner: "cluster.local/nfs-subdir-external-provisioner,"
+  harbor:
+    enable: true
+    cacertPath: "/xx/ca.crt"
+    host: "harbor.kubemanager.com"
+    scheme: "https"
+    username: "admin"
+    password: "123321"
