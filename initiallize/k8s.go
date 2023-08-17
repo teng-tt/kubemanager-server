@@ -1,10 +1,7 @@
 package initiallize
 
 import (
-	"context"
-	"fmt"
 	"io/ioutil"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
@@ -21,7 +18,7 @@ import (
 )
 
 func K8S() {
-	kubeConfig := "E:/Goproject/src/kubemanager-server/.kube/config"
+	kubeConfig := global.CONF.System.K8sConfig.KubeConfig
 	// use the current context in kubeconfig
 	config, err := clientcmd.BuildConfigFromFlags("", kubeConfig)
 	if err != nil {
@@ -60,18 +57,23 @@ func K8SWithDiscovery() {
 		}
 		global.KubeConfigSet = clientSet
 	} else {
-		K8S()
+		kubeConfig := global.CONF.System.K8sConfig.KubeConfig
+		if len(kubeConfig) > 0 && kubeConfig != "" {
+			K8S()
+		} else {
+			K8SWithToken()
+		}
 	}
 }
 
 func K8SWithToken() {
-	cAData, err := ioutil.ReadFile("k8s_user/identity/ca.crt")
+	cAData, err := ioutil.ReadFile(global.CONF.System.K8sConfig.CacertPath)
 	if err != nil {
 		panic(err)
 	}
 	config := &rest.Config{
-		Host:            "https://192.168.2.11:6443",
-		BearerTokenFile: "k8s_use/identity/token",
+		Host:            global.CONF.System.K8sConfig.Host,
+		BearerTokenFile: global.CONF.System.K8sConfig.TokenFile,
 		TLSClientConfig: rest.TLSClientConfig{
 			CAData: cAData,
 		},
@@ -80,12 +82,5 @@ func K8SWithToken() {
 	if err != nil {
 		panic(err)
 	}
-	list, err := clientSet.CoreV1().Services("").List(context.TODO(), metav1.ListOptions{})
-	if err != nil {
-		panic(err)
-	}
-	for _, item := range list.Items {
-		fmt.Println(item.Namespace, item.Name)
-
-	}
+	global.KubeConfigSet = clientSet
 }

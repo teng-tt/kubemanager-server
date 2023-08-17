@@ -1,6 +1,12 @@
 system:
   addr: ":8080"
   provisioner: "cluster.local/nfs-subdir-external-provisioner,"
+  k8SConfig: # 二者配置其一即可，两种配置，优先使用 kubeConfig
+    kubeConfig: "E:/Goproject/src/kubemanager-server/.kube/config" # k8s集群权限，使用配置文件双向认证
+    # 使用token 认证时配置
+    host: "https://192.168.2.11:6443"
+    cacertPath: "/xx/ca.crt"   # k8s集群ca证书
+    tokenFile: "k8s_use/identity/token"  # k8s集群权限，使用token认证
   harbor:
     enable: true
     cacertPath: "/xx/ca.crt"
