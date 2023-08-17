@@ -1,0 +1,27 @@
+# permissions for end users to view databacks.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: databack-viewer-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: databack-operator
+    app.kubernetes.io/part-of: databack-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: databack-viewer-role
+rules:
+- apiGroups:
+  - operator.kubemanager.com
+  resources:
+  - databacks
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - operator.kubemanager.com
+  resources:
+  - databacks/status
+  verbs:
+  - get
