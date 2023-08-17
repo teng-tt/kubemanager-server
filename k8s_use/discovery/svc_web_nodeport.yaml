@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-web
+  namespace: test
+spec:
+  # ClusterIP | LoadBalancer |
+  type: NodePort
+#  clusterIP: None
+  selector:
+    app: web
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+      nodePort: 30080

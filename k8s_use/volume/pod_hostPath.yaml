@@ -1,0 +1,25 @@
+# docker -v 参数等效
+apiVersion: v1
+kind: Pod
+metadata:
+  name: busybox
+  namespace: test
+  labels:
+    app: busybox
+spec:
+  nodeName: node01
+  containers:
+    - name: web
+      image: nginx
+      ports:
+        - containerPort: 80
+          hostPort: 8080
+      volumeMounts:
+        - name: workdir
+          mountPath: /usr/share/nginx/html
+  volumes:
+    - name: workdir
+      hostPath:
+        # DirectoryOrCreate | File | FileOrCreate | Socket | ""
+        type: Directory
+        path: /workdir2

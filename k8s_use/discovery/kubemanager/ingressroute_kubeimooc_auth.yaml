@@ -1,0 +1,44 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: web-ingressroute-auth
+  namespace: kubemanager-system
+spec:
+  entryPoints:
+    - https
+  routes:
+    - match: Host(`web.kubemanager.com`) && PathPrefix(`/`)
+      kind: Rule
+      middlewares:
+        - name: auth-middleware
+      services:
+        - name: kubemanager-svc
+          port: 80
+  tls:
+    secretName: kubemanager-cert
+---
+# Declaring the user list
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: auth-middleware
+  namespace: kubemanager-system
+spec:
+  basicAuth:
+    secret: authsecret
+
+---
+
+---
+# This is an alternate auth secret that demonstrates the basic-auth secret type.
+# Note: the password is not hashed, and is merely base64 encoded.
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: authsecret
+  namespace: kubemanager-system
+type: kubernetes.io/basic-auth
+data:
+  username: dXNlcg== # username: user
+  password: cGFzc3dvcmQ= # password: password

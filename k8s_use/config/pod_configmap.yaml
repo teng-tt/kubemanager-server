@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: testcm
+  namespace: test
+  labels:
+    cm: testcm
+data:
+  db_name: testdb
+  db_host: 127.0.0.1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test1
+  namespace: test
+  labels:
+    app: busybox
+spec:
+  containers:
+    - name: busybox
+      image: busybox
+      tty: true
+      env:
+        - name: db_name_new
+          valueFrom:
+            configMapKeyRef:
+              name: testcm
+              key: db_name
+      envFrom:
+        - configMapRef:
+            name: testcm
+          prefix: myenvxxx_

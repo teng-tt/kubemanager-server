@@ -1,0 +1,39 @@
+# Job的基础上 定义Cron表达式定时执行Job
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: hello
+  namespace: test
+spec:
+  # ┌───────────── 分钟 (0 - 59)
+  # │ ┌───────────── 小时 (0 - 23)
+  # │ │ ┌───────────── 月的某天 (1 - 31)
+  # │ │ │ ┌───────────── 月份 (1 - 12)
+  # │ │ │ │ ┌───────────── 周的某天 (0 - 6)（周日到周一；在某些系统上，7 也是星期日）
+  # │ │ │ │ │                          或者是 sun，mon，tue，web，thu，fri，sat
+  # │ │ │ │ │
+  # │ │ │ │ │
+  # * * * * *
+  schedule: "* * * * *"
+  # Allow - 允许并发
+  # Forbid - 不允许并发 丢弃新的job
+  # Replace - 不允许并发 丢弃老的job
+  concurrencyPolicy: Allow
+  # 记录成功的job数量
+  successfulJobsHistoryLimit: 3
+  # 记录失败的job数量
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          # 仅支持 OnFailure Never
+          restartPolicy: Never
+          containers:
+            - name: busybox
+              image: busybox
+              imagePullPolicy: IfNotPresent
+              command:
+                - /bin/sh
+                - -c
+                - echo "Hello Job"

@@ -1,0 +1,64 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-statefulset-svc
+  namespace: test
+spec:
+  # ClusterIP | LoadBalancer |
+  type: ClusterIP
+  # headless service
+  clusterIP: None
+  selector:
+    app: nginx-statefulset-tp
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+#      nodePort: 30080
+---
+# 管理一组Pod
+# replicas 2
+# 有序性 pod-0 pod-1(pod-0启动之后) -> 停止 pod-0停止(pod-1停止之后)
+# 有状态 id不变 - pvc(绑定pod) -> volumeClaimTemplate
+# 稳定服务发现 service->找到自己想找到的pod
+# curl pod名称.svc名称.命名空间.svc.cluster.local
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: nginx-statefulset
+  namespace: test
+  labels:
+    app: nginx-statefulset
+spec:
+  replicas: 2
+  serviceName: nginx-statefulset-svc
+  selector:
+    matchLabels:
+      app: nginx-statefulset-tp
+  template:
+    metadata:
+      labels:
+        app: nginx-statefulset-tp
+    spec:
+      containers:
+        - name: nginx
+          image: nginx
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: www
+              mountPath: /usr/share/nginx/html
+      tolerations:
+        - key: "node.kubernetes.io/unreachable"
+          operator: "Exists"
+          effect: "NoExecute"
+          tolerationSeconds: 30
+  volumeClaimTemplates:
+    - metadata:
+        name: www
+      spec:
+        resources:
+          requests:
+            storage: 100Mi
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: nfs-client

@@ -1,0 +1,14 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: web-ingressroute
+  namespace: test
+spec:
+  entryPoints:
+    - http
+  routes:
+    - match: Host(`foo.bar.cn`) && PathPrefix(`/`)
+      kind: Rule
+      services:
+        - name: svc-web
+          port: 80

@@ -1,0 +1,22 @@
+# 执行一次就结束的Pod
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: hello
+  namespace: test
+spec:
+  # 尝试backoffLimit+1次 没有成功 则退出Job
+  backoffLimit: 2
+  completions: 3
+  template:
+    spec:
+      # 仅支持 OnFailure Never
+      restartPolicy: Never
+      containers:
+        - name: busybox
+          image: busybox
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/sh
+            - -c
+            - echo "Hello Job"

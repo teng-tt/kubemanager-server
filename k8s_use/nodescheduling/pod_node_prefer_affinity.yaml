@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+
+metadata:
+  name: busybox
+  namespace: test
+  labels:
+    app: busybox
+
+spec:
+#  nodeName: node02
+  containers:
+    - name: busybox
+      image: busybox
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 80
+        preference:
+          matchExpressions:
+            - key: app2
+              operator: Exists
+      - weight: 20
+        preference:
+          matchExpressions:
+            - key: app
+              operator: In
+              values:
+                - test2

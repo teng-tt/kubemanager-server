@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    test: liveness
+  name: liveness
+  namespace: test
+spec:
+  containers:
+  - name: liveness
+    image: harbor.kubemanager.com/library/liveness
+    #每隔3s向容器探测，是否正常
+    startupProbe:
+     httpGet:
+      path: /started
+      port: 8080
+      httpHeaders:
+       - name: Custom-Header
+         value: Awesome
+     failureThreshold: 3
+     periodSeconds: 3
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: 8080
+        httpHeaders:
+        - name: Custom-Header
+          value: Awesome
+      initialDelaySeconds: 3
+      periodSeconds: 3

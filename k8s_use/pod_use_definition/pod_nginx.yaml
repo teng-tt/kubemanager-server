@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  namespace: test
+  labels: 
+    app: nginx
+spec: 
+  hostNetwork: false
+  #可选值：Default|ClusterFirst|ClusterFirstWithHostNet|None
+  dnsPolicy: "Default"
+  #dns配置
+  dnsConfig:
+    nameservers:
+    - 8.8.8.8
+  #域名映射
+  hostAliases:
+    - ip: 192.168.1.18
+      hostnames:
+      - "foo.local"
+      - "bar.local"
+  containers:
+  - name: nginx
+    image: nginx
+    imagePullPolicy: IfNotPresent
+    ports: 
+    - name: default
+      containerPort: 80
+      #如果使用hostnetwork 那这里就不能指定端口
+      hostPort: 8080

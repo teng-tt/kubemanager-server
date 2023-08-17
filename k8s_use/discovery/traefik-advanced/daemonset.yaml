@@ -1,0 +1,39 @@
+kind: DaemonSet
+apiVersion: apps/v1
+metadata:
+  name: traefik-deployment
+  namespace: traefik-system
+  labels:
+    app: traefik
+
+spec:
+#  replicas: 1
+  selector:
+    matchLabels:
+      app: traefik
+  template:
+    metadata:
+      labels:
+        app: traefik
+    spec:
+      serviceAccountName: traefik-account
+      containers:
+        - name: traefik
+          image: traefik:v2.10
+          imagePullPolicy: IfNotPresent
+          args:
+            - --api.insecure
+            - --providers.kubernetesingress
+            - --providers.kubernetescrd
+            - --entrypoints.http.address=:80
+            - --entrypoints.https.address=:443
+          ports:
+            - name: web
+              containerPort: 80
+              hostPort: 80
+            - name: dashboard
+              containerPort: 8080
+              hostPort: 8080
+            - name: https
+              containerPort: 443
+              hostPort: 443

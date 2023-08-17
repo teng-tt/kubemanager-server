@@ -1,0 +1,100 @@
+#配置svc
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus-svc
+  namespace: kubemanager-system
+spec:
+  selector:
+    app: prometheus
+  ports:
+    - name: http
+      port: 80
+      targetPort: 9090
+      nodePort: 30090
+      protocol: TCP
+  type: NodePort
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-yml
+  namespace: kubemanager-system
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+      evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+    alerting:
+      alertmanagers:
+        - static_configs:
+            - targets:
+    rule_files:
+    scrape_configs:
+      - job_name: "prometheus"
+        # metrics_path defaults to '/metrics'
+        # scheme defaults to 'http'.
+        static_configs:
+          - targets: ["localhost:9090"]
+      - job_name: "kubemanager-server"
+        scheme: http
+        scrape_interval: 60s
+        metrics_path: "/metrics/prometheus"
+        static_configs:
+          - targets: ["192.168.1.9:8082"]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus
+  namespace: kubemanager-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      tolerations:
+        - effect: NoSchedule
+          key: node-role.kubernetes.io/master
+          operator: Exists
+        - effect: NoSchedule
+          key: node-role.kubernetes.io/control-plane
+          operator: Exists
+      hostNetwork: true
+      containers:
+        - name: prometheus
+          #command: ["/bin/sh","-c","cat /etc/prometheus/prometheus.yaml"]
+          #args: ["--config.file=/etc/prometheus/prometheus.yml","--storage.tsdb.path=","--web.console.libraries=/usr/share/prometheus/console_libraries","--web.console.templates=/usr/share/prometheus/consoles"]
+          image: prom/prometheus:v2.37.6
+          #imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
+          #  securityContext: 
+          # privileged: true
+#          ports:
+#            - name: main
+#              containerPort: 9090
+#              hostPort: 9090
+          securityContext:
+            runAsUser: 0
+          volumeMounts:
+            - mountPath: /etc/prometheus
+              name: prometheus-yml
+            - mountPath: /prometheus
+              name: prometheus-data
+      volumes:
+        #资源文件下载目录
+        - name: prometheus-yml
+          configMap:
+            name: prometheus-yml
+        - name: prometheus-data
+          hostPath:
+            type: DirectoryOrCreate
+            #path: /var/lib/star/prometheus
+            path: /var/lib/promethues

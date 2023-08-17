@@ -1,6 +1,7 @@
-# kubmanager
+# kubemanager-server
 
-go语言开发的的k8s集群管理工具
+go语言开发的的k8s集群管理工具，基于web可视化的方式对k8s集群进行管理，简化k8s集群操作难度 \
+同时整合Harbor与 prometheus实现镜像管理和仪表盘监控
 
 开发环境说明： 
 - go语言版本：go1.19 windows/amd64

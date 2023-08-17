@@ -1,0 +1,73 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: minio-statefulset-svc
+  namespace: test
+spec:
+  # ClusterIP | LoadBalancer |
+  type: NodePort
+  # headless service
+#  clusterIP: None
+  selector:
+    app: minio-statefulset-tp
+  ports:
+    - name: web
+      port: 9001
+      targetPort: 9001
+      nodePort: 30901
+    - name: backend
+      port: 9000
+      targetPort: 9000
+      nodePort: 30900
+---
+# 管理一组Pod
+# replicas 2
+# 有序性 pod-0 pod-1(pod-0启动之后) -> 停止 pod-0停止(pod-1停止之后)
+# 有状态 id不变 - pvc(绑定pod) -> volumeClaimTemplate
+# 稳定服务发现 service->找到自己想找到的pod
+# curl pod名称.svc名称.命名空间.svc.cluster.local
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: minio-statefulset
+  namespace: test
+  labels:
+    app: minio-statefulset
+spec:
+  replicas: 1
+  serviceName: minio-statefulset-svc
+  selector:
+    matchLabels:
+      app: minio-statefulset-tp
+  template:
+    metadata:
+      labels:
+        app: minio-statefulset-tp
+    spec:
+      containers:
+        - name: minio
+          image: bitnami/minio:2023
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: MINIO_ROOT_USER
+              value: "admin"
+            - name: MINIO_ROOT_PASSWORD
+              value: "12345678"
+          command:
+            - /bin/bash
+            - -c
+          args:
+            - minio server /data --console-address :9001
+          volumeMounts:
+            - name: data
+              mountPath: /data
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        resources:
+          requests:
+            storage: 2Gi
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: nfs-client

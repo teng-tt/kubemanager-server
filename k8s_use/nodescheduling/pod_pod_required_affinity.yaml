@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Pod
+
+metadata:
+  name: busybox-b
+  namespace: test
+  labels:
+    app: busybox-b
+
+spec:
+#  nodeName: node02
+  containers:
+    - name: busybox
+      image: busybox
+  affinity:
+    podAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - topologyKey: kubernetes.io/hostname
+          labelSelector:
+            matchExpressions:
+              - key: app
+                operator: In
+                values:
+                  - busybox

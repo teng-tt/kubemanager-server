@@ -1,6 +1,6 @@
 kind: pipeline
 type: docker
-name: kubmanager-server-publish
+name: kubemanager-server-publish
 steps:
   - name: build
     image: plugins/docker
@@ -15,8 +15,8 @@ steps:
       username: admin
       password:
         from_secret: harbor_password
-      repo: harbor.kubmanager.com/kubmanager/kubmanager-server
-      registry: harbor.kubmanager.com
+      repo: harbor.kubemanager.com/kubemanager/kubemanager-server
+      registry: harbor.kubemanager.com
       tags:
         - v1.4
   - name: ssh commands
@@ -29,9 +29,9 @@ steps:
       port: 22
       script:
         #拉取镜像并重启 注意--需要提前在目标主机完成docker login
-        - if [ $(docker ps -a | grep kubmanager-server | wc -l) -ge 1 ];then docker stop kubmanager-server && docker rm kubmanager-server; fi
-        - docker pull harbor.kubmanager.com/kubmanager/kubmanager-server:v1.4
-        - docker run --name kubmanager-server --restart=always -d -p8082:8082 harbor.kubmanager.com/kubmanager/kubmanager-server:v1.4
+        - if [ $(docker ps -a | grep kubemanager-server | wc -l) -ge 1 ];then docker stop kubemanager-server && docker rm kubemanager-server; fi
+        - docker pull harbor.kubemanager.com/kubemanager/kubemanager-server:v1.4
+        - docker run --name kubemanager-server --restart=always -d -p8082:8082 harbor.kubemanager.com/kubemanager/kubemanager-server:v1.4
 volumes:
   - name: hosts
     host:

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubemanager
+  namespace: kubemanager-system
+  labels:
+    app: kubemanager
+spec:
+  selector:
+    matchLabels:
+      app: kubemanager
+  template:
+    metadata:
+      labels:
+        app: kubemanager
+    spec:
+      serviceAccount: kubemanager-admin
+      imagePullSecrets:
+        - name: private-harbor-reg
+      containers:
+        - name: server
+          image: harbor.kubemanager.com/kubemanager/kubemanager-server:v1.8.1
+          ports:
+            - name: port0
+              containerPort: 8082
+        - name: web
+          image: harbor.kubemanager.com/kubemanager/kubemanager-web:v1.7
+          env:
+            - name: BACKEND_HOST
+              value: http://127.0.0.1:8082/
+          ports:
+            - name: port0
+              containerPort: 80

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-web-lb
+  namespace: test
+spec:
+  # ClusterIP | LoadBalancer |
+  #vip -> real cluster node ip(speaker)
+  type: LoadBalancer
+#  clusterIP: None
+  selector:
+    app: web
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+#      nodePort: 30080

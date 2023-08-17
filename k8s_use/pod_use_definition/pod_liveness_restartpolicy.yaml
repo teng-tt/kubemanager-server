@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    test: liveness
+  name: liveness
+  namespace: test
+spec:
+  imagePullSecrets: 
+  - name: regcred
+  # Always(总是重启)|OnFailure(异常停止执行重启)|Never(无论如何都不重启)
+  restartPolicy: Never
+  containers:
+  - name: liveness
+    image: harbor.kubemanager.com/kubemanager/liveness
+    #每隔3s向容器探测，是否正常
+    livenessProbe:
+      httpGet:
+        path: /healthz-x
+        port: 8080
+        httpHeaders:
+        - name: Custom-Header
+          value: Awesome
+      initialDelaySeconds: 3
+      periodSeconds: 3

@@ -1,0 +1,72 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  namespace: test
+  labels: 
+    app: nginx
+spec: 
+  hostNetwork: false
+  #可选值：Default|ClusterFirst|ClusterFirstWithHostNet|None
+  dnsPolicy: "Default"
+  #dns配置
+  dnsConfig:
+    nameservers:
+    - 8.8.8.8
+  #域名映射
+  hostAliases:
+    - ip: 192.168.1.18
+      hostnames:
+      - "foo.local"
+      - "bar.local"
+  volumes: 
+  - name: cache-volume
+    emptyDir: {}
+  initContainers: 
+  - name: busybox
+    image: busybox
+    command: ["ls","/"]
+    args: ["a","b","c"]
+  containers:
+  - name: nginx
+    image: nginx
+    imagePullPolicy: IfNotPresent
+    env:
+    - name: test
+      value: "123"
+    ports: 
+    - name: default
+      containerPort: 80
+      #如果使用hostnetwork 那这里就不能指定端口
+      hostPort: 8080
+    resources: 
+      requests: 
+        memory: "100Mi"
+        cpu: "1000m"
+      limits: 
+        memory: "100Mi"
+        cpu: "1000m"
+    startupProbe:
+     httpGet:
+      path: /started
+      port: 8080
+      httpHeaders:
+       - name: Custom-Header
+         value: Awesome
+     failureThreshold: 3
+     periodSeconds: 3
+    livenessProbe:
+      exec:
+        command:
+        - cat
+        - /tmp/healthy
+      initialDelaySeconds: 5
+      periodSeconds: 5
+    readinessProbe:
+      tcpSocket:
+        port: 8080
+      initialDelaySeconds: 5
+      periodSeconds: 10
+    volumeMounts:
+    - name: cache-volume
+      mountPath: /test/cache

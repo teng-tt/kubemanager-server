@@ -1,0 +1,29 @@
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: strip-prefix
+  namespace: test
+spec:
+  stripPrefix:
+    prefixes:
+      - "/web"
+#    forceSlash: false
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: test-auth
+  namespace: test
+spec:
+  basicAuth:
+    secret: authsecret
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: authsecret
+  namespace: test
+type: kubernetes.io/basic-auth
+data:
+  username: dXNlcg== # username: user
+  password: cGFzc3dvcmQ= # password: password

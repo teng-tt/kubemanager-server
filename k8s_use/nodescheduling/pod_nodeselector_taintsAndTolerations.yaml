@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+
+metadata:
+  name: busybox
+  namespace: test
+  labels:
+    app: busybox
+
+spec:
+#  nodeName: node02`
+  nodeSelector:
+    "app": "test"
+  tolerations:
+    - key: "app"
+      value: "test"
+      operator: "Equal"
+      effect: "NoExecute"
+      tolerationSeconds: 100
+  containers:
+    - name: busybox
+      image: busybox

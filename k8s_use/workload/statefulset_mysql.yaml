@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-statefulset-svc
+  namespace: test
+spec:
+  # ClusterIP | LoadBalancer |
+  type: NodePort
+  # headless service
+#  clusterIP: None
+  selector:
+    app: mysql-statefulset-tp
+  ports:
+    - name: http
+      port: 80
+      targetPort: 3306
+      nodePort: 30306
+---
+# 管理一组Pod
+# replicas 2
+# 有序性 pod-0 pod-1(pod-0启动之后) -> 停止 pod-0停止(pod-1停止之后)
+# 有状态 id不变 - pvc(绑定pod) -> volumeClaimTemplate
+# 稳定服务发现 service->找到自己想找到的pod
+# curl pod名称.svc名称.命名空间.svc.cluster.local
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql-statefulset
+  namespace: test
+  labels:
+    app: mysql-statefulset
+spec:
+  replicas: 1
+  serviceName: mysql-statefulset-svc
+  selector:
+    matchLabels:
+      app: mysql-statefulset-tp
+  template:
+    metadata:
+      labels:
+        app: mysql-statefulset-tp
+    spec:
+      containers:
+        - name: mysql
+          image: mysql:8.0
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: "123456"
+          volumeMounts:
+            - name: database
+              mountPath: /var/lib/mysql
+  volumeClaimTemplates:
+    - metadata:
+        name: database
+      spec:
+        resources:
+          requests:
+            storage: 500Mi
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: nfs-client
