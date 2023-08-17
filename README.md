@@ -169,8 +169,21 @@ RoleBinding/ClusterRoleBinding
 此处配置的数据源为mysql8.0, 目标存储源为oss 
 
 ### 9. kubmanager 整合 Harbor
+在管理平台整合Harbor v2实现容器镜像管理
 - [x] 集成HarborAPI
 - [x] Projects 列表查询(分页|模糊查询)
 - [x] Repositories 列表查询(分页|模糊查询)
 - [x] Artifacts 列表查询(分页|模糊查询)
 - [x] 镜像匹配接口(用户Pod输入镜像信息时，自动匹配)
+
+### 10. 仪表盘功能
+在管理平台实现监控信息展示，整合prometheus
+- [x] 基础信息查看(k8s版本信息，集群初始化时间等)
+- [x] 各资源的统计信息
+- [x] 集群pod、cpu、内存耗用情况(瞬时)
+    - [x] 安装metrics-server
+    - [x] 调用metrics-server接口，计算集群的cpu和内存的耗用
+- [x] 集群 cpu、内存变化趋势
+    - [x] 安装prometheus
+    - [x] 提供prometheus pull 数据的接口(exporter)
+    - [x] 调用提供prometheus 查询指标统计数据

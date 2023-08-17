@@ -8,3 +8,7 @@ system:
     scheme: "https"
     username: "admin"
     password: "123321"
+  prometheus:
+    enable: true
+    host: "prometheus.kubemanager.com"
+    scheme: "http"
