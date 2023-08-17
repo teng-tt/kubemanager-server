@@ -2,7 +2,7 @@ package metrics
 
 import (
 	"github.com/gin-gonic/gin"
-	"kubmanager/api"
+	"kubemanager.com/api"
 )
 
 func initMetricsRouter(group *gin.RouterGroup) {

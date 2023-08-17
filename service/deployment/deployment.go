@@ -5,10 +5,10 @@ import (
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"kubmanager/global"
-	deployReq "kubmanager/model/deployment/request"
-	deployResp "kubmanager/model/deployment/response"
-	"kubmanager/utils"
+	"kubemanager.com/global"
+	deployReq "kubemanager.com/model/deployment/request"
+	deployResp "kubemanager.com/model/deployment/response"
+	"kubemanager.com/utils"
 	"strings"
 )
 

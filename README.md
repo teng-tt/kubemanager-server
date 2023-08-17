@@ -169,7 +169,7 @@ RoleBinding/ClusterRoleBinding
 实现按指定时间与间隔，将数据源备份到目标存储源 \
 此处配置的数据源为mysql8.0, 目标存储源为oss 
 
-### 9. kubmanager 整合 Harbor
+### 9. kubemanager-server 整合 Harbor
 在管理平台整合Harbor v2实现容器镜像管理
 - [x] 集成HarborAPI
 - [x] Projects 列表查询(分页|模糊查询)

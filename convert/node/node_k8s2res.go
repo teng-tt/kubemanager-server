@@ -2,8 +2,8 @@ package node
 
 import (
 	corev1 "k8s.io/api/core/v1"
-	"kubmanager/model/base"
-	node_res "kubmanager/model/node/response"
+	"kubemanager.com/model/base"
+	node_res "kubemanager.com/model/node/response"
 )
 
 type NodeK8s2Res struct {

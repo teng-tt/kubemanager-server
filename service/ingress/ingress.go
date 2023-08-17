@@ -4,10 +4,10 @@ import (
 	"context"
 	networkingv1 "k8s.io/api/networking/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"kubmanager/global"
-	ingress_req "kubmanager/model/ingress/request"
-	ingress_resp "kubmanager/model/ingress/response"
-	"kubmanager/utils"
+	"kubemanager.com/global"
+	ingress_req "kubemanager.com/model/ingress/request"
+	ingress_resp "kubemanager.com/model/ingress/response"
+	"kubemanager.com/utils"
 	"strings"
 )
 

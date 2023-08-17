@@ -2,8 +2,8 @@ package k8s
 
 import (
 	"github.com/gin-gonic/gin"
-	conf_req "kubmanager/model/configmap/request"
-	"kubmanager/response"
+	conf_req "kubemanager.com/model/configmap/request"
+	"kubemanager.com/response"
 )
 
 type ConfigMapApi struct {

@@ -2,8 +2,8 @@ package k8s
 
 import (
 	"github.com/gin-gonic/gin"
-	req_secret "kubmanager/model/secret/request"
-	"kubmanager/response"
+	req_secret "kubemanager.com/model/secret/request"
+	"kubemanager.com/response"
 )
 
 type SecretApi struct {

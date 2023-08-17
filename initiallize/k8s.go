@@ -8,7 +8,7 @@ import (
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
-	"kubmanager/global"
+	"kubemanager.com/global"
 	"os"
 	//
 	// Uncomment to load all auth plugins
@@ -21,7 +21,7 @@ import (
 )
 
 func K8S() {
-	kubeConfig := "E:/Goproject/src/kubmanager/.kube/config"
+	kubeConfig := "E:/Goproject/src/kubemanager-server/.kube/config"
 	// use the current context in kubeconfig
 	config, err := clientcmd.BuildConfigFromFlags("", kubeConfig)
 	if err != nil {

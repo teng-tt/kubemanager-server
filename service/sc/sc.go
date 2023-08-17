@@ -5,10 +5,10 @@ import (
 	"fmt"
 	storagev1 "k8s.io/api/storage/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"kubmanager/global"
-	scReq "kubmanager/model/sc/request"
-	scResp "kubmanager/model/sc/response"
-	"kubmanager/utils"
+	"kubemanager.com/global"
+	scReq "kubemanager.com/model/sc/request"
+	scResp "kubemanager.com/model/sc/response"
+	"kubemanager.com/utils"
 	"strings"
 )
 

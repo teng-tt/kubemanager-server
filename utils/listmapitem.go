@@ -1,6 +1,6 @@
 package utils
 
-import "kubmanager/model/base"
+import "kubemanager.com/model/base"
 
 func ToMap(items []base.ListMapItem) map[string]string {
 	dataMap := make(map[string]string)

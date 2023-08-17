@@ -2,8 +2,8 @@ package k8s
 
 import (
 	"github.com/gin-gonic/gin"
-	cronjobReq "kubmanager/model/cronjob/request"
-	"kubmanager/response"
+	cronjobReq "kubemanager.com/model/cronjob/request"
+	"kubemanager.com/response"
 )
 
 type CronJobApi struct {

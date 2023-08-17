@@ -1,8 +1,8 @@
 package request
 
 import (
-	"kubmanager/model/base"
-	podReq "kubmanager/model/pod/request"
+	"kubemanager.com/model/base"
+	podReq "kubemanager.com/model/pod/request"
 )
 
 type JobBase struct {

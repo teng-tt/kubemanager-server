@@ -5,10 +5,10 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
-	"kubmanager/global"
-	svcReq "kubmanager/model/svc/request"
-	svcRes "kubmanager/model/svc/response"
-	"kubmanager/utils"
+	"kubemanager.com/global"
+	svcReq "kubemanager.com/model/svc/request"
+	svcRes "kubemanager.com/model/svc/response"
+	"kubemanager.com/utils"
 	"strings"
 )
 

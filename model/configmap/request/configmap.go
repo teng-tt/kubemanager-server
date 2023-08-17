@@ -1,6 +1,6 @@
 package request
 
-import "kubmanager/model/base"
+import "kubemanager.com/model/base"
 
 type ConfigMap struct {
 	Name      string             `json:"name"`

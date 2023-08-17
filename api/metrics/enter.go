@@ -1,6 +1,6 @@
 package metrics
 
-import "kubmanager/service"
+import "kubemanager.com/service"
 
 type ApiGroup struct {
 	MetricsApi

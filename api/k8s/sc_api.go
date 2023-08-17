@@ -2,8 +2,8 @@ package k8s
 
 import (
 	"github.com/gin-gonic/gin"
-	scReq "kubmanager/model/sc/request"
-	"kubmanager/response"
+	scReq "kubemanager.com/model/sc/request"
+	"kubemanager.com/response"
 )
 
 type SCApi struct {

@@ -1,8 +1,8 @@
 package request
 
 import (
-	"kubmanager/model/base"
-	"kubmanager/model/ingroute"
+	"kubemanager.com/model/base"
+	"kubemanager.com/model/ingroute"
 )
 
 type IngressRouteReq struct {

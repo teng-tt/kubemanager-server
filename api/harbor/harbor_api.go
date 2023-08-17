@@ -2,8 +2,8 @@ package harbor
 
 import (
 	"github.com/gin-gonic/gin"
-	"kubmanager/global"
-	"kubmanager/response"
+	"kubemanager.com/global"
+	"kubemanager.com/response"
 	"strconv"
 )
 

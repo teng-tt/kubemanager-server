@@ -2,8 +2,8 @@ package k8s
 
 import (
 	"github.com/gin-gonic/gin"
-	pvc_req "kubmanager/model/pvc/request"
-	"kubmanager/response"
+	pvc_req "kubemanager.com/model/pvc/request"
+	"kubemanager.com/response"
 )
 
 type PVCApi struct {

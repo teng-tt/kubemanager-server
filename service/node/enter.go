@@ -1,6 +1,6 @@
 package node
 
-import "kubmanager/convert"
+import "kubemanager.com/convert"
 
 type NodeServiceGroup struct {
 	NodeService NodeService

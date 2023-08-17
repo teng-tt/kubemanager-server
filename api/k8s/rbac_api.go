@@ -2,8 +2,8 @@ package k8s
 
 import (
 	"github.com/gin-gonic/gin"
-	rbacReqs "kubmanager/model/rbac/request"
-	"kubmanager/response"
+	rbacReqs "kubemanager.com/model/rbac/request"
+	"kubemanager.com/response"
 )
 
 type RbacApi struct {

@@ -2,7 +2,7 @@ package validate
 
 import (
 	"errors"
-	pod_req "kubmanager/model/pod/request"
+	pod_req "kubemanager.com/model/pod/request"
 )
 
 type PodValidate struct {

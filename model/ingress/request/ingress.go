@@ -2,7 +2,7 @@ package request
 
 import (
 	networkingv1 "k8s.io/api/networking/v1"
-	"kubmanager/model/base"
+	"kubemanager.com/model/base"
 )
 
 type IngressRule struct {

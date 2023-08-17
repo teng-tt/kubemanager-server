@@ -1,8 +1,8 @@
 package main
 
 import (
-	"kubmanager/global"
-	"kubmanager/initiallize"
+	"kubemanager.com/global"
+	"kubemanager.com/initiallize"
 )
 
 // 项目启动入口

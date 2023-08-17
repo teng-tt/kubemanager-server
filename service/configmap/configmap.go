@@ -3,9 +3,9 @@ package configmap
 import (
 	"context"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"kubmanager/global"
-	conf_req "kubmanager/model/configmap/request"
-	conf_res "kubmanager/model/configmap/response"
+	"kubemanager.com/global"
+	conf_req "kubemanager.com/model/configmap/request"
+	conf_res "kubemanager.com/model/configmap/response"
 	"strings"
 )
 

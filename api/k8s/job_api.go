@@ -2,8 +2,8 @@ package k8s
 
 import (
 	"github.com/gin-gonic/gin"
-	jobReqs "kubmanager/model/job/request"
-	"kubmanager/response"
+	jobReqs "kubemanager.com/model/job/request"
+	"kubemanager.com/response"
 )
 
 type JoApi struct {

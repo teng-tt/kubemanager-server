@@ -8,9 +8,9 @@ import (
 	k8serror "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/watch"
-	"kubmanager/global"
-	pod_req "kubmanager/model/pod/request"
-	pod_res "kubmanager/model/pod/response"
+	"kubemanager.com/global"
+	pod_req "kubemanager.com/model/pod/request"
+	pod_res "kubemanager.com/model/pod/response"
 	"strings"
 )
 

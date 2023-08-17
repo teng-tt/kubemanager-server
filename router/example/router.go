@@ -2,7 +2,7 @@ package example
 
 import (
 	"github.com/gin-gonic/gin"
-	"kubmanager/api"
+	"kubemanager.com/api"
 )
 
 type ExampleRouter struct {

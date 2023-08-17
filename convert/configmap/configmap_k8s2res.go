@@ -2,8 +2,8 @@ package configmap
 
 import (
 	corev1 "k8s.io/api/core/v1"
-	conf_res "kubmanager/model/configmap/response"
-	"kubmanager/utils"
+	conf_res "kubemanager.com/model/configmap/response"
+	"kubemanager.com/utils"
 )
 
 type K8s2ResConvert struct {

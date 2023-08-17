@@ -5,9 +5,9 @@ import (
 	"encoding/json"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
-	"kubmanager/global"
-	node_req "kubmanager/model/node/request"
-	node_res "kubmanager/model/node/response"
+	"kubemanager.com/global"
+	node_req "kubemanager.com/model/node/request"
+	node_res "kubemanager.com/model/node/response"
 	"strings"
 )
 

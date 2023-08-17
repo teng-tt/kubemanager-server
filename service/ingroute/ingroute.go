@@ -5,11 +5,11 @@ import (
 	"encoding/json"
 	"fmt"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"kubmanager/global"
-	ingroutes "kubmanager/model/ingroute"
-	ingrouteReq "kubmanager/model/ingroute/request"
-	ingrouteResp "kubmanager/model/ingroute/response"
-	"kubmanager/utils"
+	"kubemanager.com/global"
+	ingroutes "kubemanager.com/model/ingroute"
+	ingrouteReq "kubemanager.com/model/ingroute/request"
+	ingrouteResp "kubemanager.com/model/ingroute/response"
+	"kubemanager.com/utils"
 	"strings"
 )
 

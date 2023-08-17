@@ -2,8 +2,8 @@ package request
 
 import (
 	batchv1 "k8s.io/api/batch/v1"
-	"kubmanager/model/base"
-	podReq "kubmanager/model/pod/request"
+	"kubemanager.com/model/base"
+	podReq "kubemanager.com/model/pod/request"
 )
 
 type CronJobBase struct {

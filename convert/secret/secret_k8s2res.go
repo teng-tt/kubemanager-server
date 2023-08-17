@@ -2,8 +2,8 @@ package secret
 
 import (
 	corev1 "k8s.io/api/core/v1"
-	res_secret "kubmanager/model/secret/response"
-	"kubmanager/utils"
+	res_secret "kubemanager.com/model/secret/response"
+	"kubemanager.com/utils"
 )
 
 type K8s2Res struct {

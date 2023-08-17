@@ -1,6 +1,6 @@
 package configmap
 
-import "kubmanager/convert"
+import "kubemanager.com/convert"
 
 type ServiceGroup struct {
 	ConfigMapService ConfigMapService

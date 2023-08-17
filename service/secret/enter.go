@@ -1,6 +1,6 @@
 package secret
 
-import "kubmanager/convert"
+import "kubemanager.com/convert"
 
 type ServicerGroup struct {
 	SecretService

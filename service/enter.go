@@ -1,22 +1,22 @@
 package service
 
 import (
-	"kubmanager/service/configmap"
-	"kubmanager/service/cronjob"
-	"kubmanager/service/deployment"
-	"kubmanager/service/ingress"
-	"kubmanager/service/ingroute"
-	"kubmanager/service/job"
-	"kubmanager/service/metrics"
-	"kubmanager/service/node"
-	"kubmanager/service/pod"
-	"kubmanager/service/pv"
-	"kubmanager/service/pvc"
-	"kubmanager/service/rbac"
-	"kubmanager/service/sc"
-	"kubmanager/service/secret"
-	"kubmanager/service/statefulset"
-	"kubmanager/service/svc"
+	"kubemanager.com/service/configmap"
+	"kubemanager.com/service/cronjob"
+	"kubemanager.com/service/deployment"
+	"kubemanager.com/service/ingress"
+	"kubemanager.com/service/ingroute"
+	"kubemanager.com/service/job"
+	"kubemanager.com/service/metrics"
+	"kubemanager.com/service/node"
+	"kubemanager.com/service/pod"
+	"kubemanager.com/service/pv"
+	"kubemanager.com/service/pvc"
+	"kubemanager.com/service/rbac"
+	"kubemanager.com/service/sc"
+	"kubemanager.com/service/secret"
+	"kubemanager.com/service/statefulset"
+	"kubemanager.com/service/svc"
 )
 
 type ServiceGroup struct {

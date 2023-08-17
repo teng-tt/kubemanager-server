@@ -5,8 +5,8 @@ import (
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
-	"kubmanager/model/base"
-	pod_req "kubmanager/model/pod/request"
+	"kubemanager.com/model/base"
+	pod_req "kubemanager.com/model/pod/request"
 	"strconv"
 	"strings"
 )

@@ -1,5 +1,5 @@
 FROM golang:apline as builder
-WORKDIR /go/src/kubmanager/server
+WORKDIR /go/src/kubemanager-server
 COPY . .
 
 RUN go env -w GO111MODULE=on \
@@ -13,10 +13,10 @@ FROM apline:latest
 
 LABEL MAINTAINER = "teng-tt"
 
-WORKDIR /go/src/kubmanager/server
-COPY --from=builder /go/src/kubmanaer/server/config.yaml ./config.yaml
-COPY --from=builder /go/src/kubmanaer/server/.kube/config ./.kube/config
-COPY --from=builder /go/src/kubmanaer/server/server ./
+WORKDIR /go/src/kubemanager
+COPY --from=builder /go/src/kubemanager-server/config.yaml ./config.yaml
+COPY --from=builder /go/src/kubemanager-server/.kube/config ./.kube/config
+COPY --from=builder /go/src/kubemanager-server/server ./
 
 EXPOSE 8080
 ENTRYPOINT ./server

@@ -1,9 +1,9 @@
 package request
 
 import (
-	"kubmanager/model/base"
-	podReq "kubmanager/model/pod/request"
-	pvcReq "kubmanager/model/pvc/request"
+	"kubemanager.com/model/base"
+	podReq "kubemanager.com/model/pod/request"
+	pvcReq "kubemanager.com/model/pvc/request"
 )
 
 type StatefulSetBase struct {

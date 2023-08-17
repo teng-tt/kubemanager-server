@@ -2,7 +2,7 @@ package k8s
 
 import (
 	"github.com/gin-gonic/gin"
-	"kubmanager/api"
+	"kubemanager.com/api"
 )
 
 func initCronjobRouter(group *gin.RouterGroup) {

@@ -2,8 +2,8 @@ package k8s
 
 import (
 	"github.com/gin-gonic/gin"
-	pv_req "kubmanager/model/pv/request"
-	"kubmanager/response"
+	pv_req "kubemanager.com/model/pv/request"
+	"kubemanager.com/response"
 )
 
 type PVApi struct {

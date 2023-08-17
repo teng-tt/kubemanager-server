@@ -2,8 +2,8 @@ package k8s
 
 import (
 	"github.com/gin-gonic/gin"
-	deployReq "kubmanager/model/deployment/request"
-	"kubmanager/response"
+	deployReq "kubemanager.com/model/deployment/request"
+	"kubemanager.com/response"
 )
 
 type DeploymentApi struct {

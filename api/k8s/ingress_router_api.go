@@ -2,8 +2,8 @@ package k8s
 
 import (
 	"github.com/gin-gonic/gin"
-	ingrouteReq "kubmanager/model/ingroute/request"
-	"kubmanager/response"
+	ingrouteReq "kubemanager.com/model/ingroute/request"
+	"kubemanager.com/response"
 )
 
 type IngressRouteApi struct {

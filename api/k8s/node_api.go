@@ -2,8 +2,8 @@ package k8s
 
 import (
 	"github.com/gin-gonic/gin"
-	node_req "kubmanager/model/node/request"
-	"kubmanager/response"
+	node_req "kubemanager.com/model/node/request"
+	"kubemanager.com/response"
 )
 
 type NodeApi struct {

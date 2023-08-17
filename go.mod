@@ -1,4 +1,4 @@
-module kubmanager
+module kubemanager.com
 
 go 1.19
 

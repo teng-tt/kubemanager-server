@@ -5,10 +5,10 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"kubmanager/global"
-	rbacReqs "kubmanager/model/rbac/request"
-	rbacRes "kubmanager/model/rbac/response"
-	"kubmanager/utils"
+	"kubemanager.com/global"
+	rbacReqs "kubemanager.com/model/rbac/request"
+	rbacRes "kubemanager.com/model/rbac/response"
+	"kubemanager.com/utils"
 	"strings"
 )
 

@@ -2,7 +2,7 @@ package harbor
 
 import (
 	"github.com/gin-gonic/gin"
-	"kubmanager/api"
+	"kubemanager.com/api"
 )
 
 func initHarborRouter(group *gin.RouterGroup) {

@@ -2,8 +2,8 @@ package k8s
 
 import (
 	"github.com/gin-gonic/gin"
-	statefulsetReqs "kubmanager/model/statefulset/request"
-	"kubmanager/response"
+	statefulsetReqs "kubemanager.com/model/statefulset/request"
+	"kubemanager.com/response"
 )
 
 type StatefulSetApi struct {

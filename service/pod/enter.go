@@ -1,6 +1,6 @@
 package pod
 
-import "kubmanager/convert"
+import "kubemanager.com/convert"
 
 type PodServiceGroup struct {
 	PodService PodService

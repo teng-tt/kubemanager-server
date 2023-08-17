@@ -1,8 +1,8 @@
 package initiallize
 
 import (
-	"kubmanager/global"
-	"kubmanager/plugins/harbor"
+	"kubemanager.com/global"
+	"kubemanager.com/plugins/harbor"
 )
 
 func InitHarborClient() {

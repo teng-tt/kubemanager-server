@@ -3,8 +3,8 @@ package secret
 import (
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	req_secret "kubmanager/model/secret/request"
-	"kubmanager/utils"
+	req_secret "kubemanager.com/model/secret/request"
+	"kubemanager.com/utils"
 )
 
 type Req2K8s struct {

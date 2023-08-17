@@ -1,10 +1,10 @@
 package router
 
 import (
-	"kubmanager/router/example"
-	"kubmanager/router/harbor"
-	"kubmanager/router/k8s"
-	"kubmanager/router/metrics"
+	"kubemanager.com/router/example"
+	"kubemanager.com/router/harbor"
+	"kubemanager.com/router/k8s"
+	"kubemanager.com/router/metrics"
 )
 
 type RouterGroup struct {

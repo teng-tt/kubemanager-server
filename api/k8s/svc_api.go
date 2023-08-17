@@ -2,8 +2,8 @@ package k8s
 
 import (
 	"github.com/gin-gonic/gin"
-	svcReq "kubmanager/model/svc/request"
-	"kubmanager/response"
+	svcReq "kubemanager.com/model/svc/request"
+	"kubemanager.com/response"
 )
 
 type SVCApi struct {

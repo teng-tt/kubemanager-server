@@ -4,9 +4,9 @@ import (
 	"context"
 	"github.com/gin-gonic/gin"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"kubmanager/global"
-	namespace_res "kubmanager/model/namespace/response"
-	"kubmanager/response"
+	"kubemanager.com/global"
+	namespace_res "kubemanager.com/model/namespace/response"
+	"kubemanager.com/response"
 )
 
 type NamespaceApi struct {

@@ -3,9 +3,9 @@ package secret
 import (
 	"context"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"kubmanager/global"
-	req_secret "kubmanager/model/secret/request"
-	res_secret "kubmanager/model/secret/response"
+	"kubemanager.com/global"
+	req_secret "kubemanager.com/model/secret/request"
+	res_secret "kubemanager.com/model/secret/response"
 	"strings"
 )
 

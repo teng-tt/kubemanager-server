@@ -7,9 +7,9 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
-	"kubmanager/global"
-	pod_req "kubmanager/model/pod/request"
-	"kubmanager/response"
+	"kubemanager.com/global"
+	pod_req "kubemanager.com/model/pod/request"
+	"kubemanager.com/response"
 )
 
 type PodApi struct {

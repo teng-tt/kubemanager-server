@@ -9,9 +9,9 @@ import (
 	"github.com/prometheus/common/model"
 	"hash/fnv"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"kubmanager/global"
-	metricsK8s "kubmanager/model/metrics/k8s"
-	metricsResp "kubmanager/model/metrics/response"
+	"kubemanager.com/global"
+	metricsK8s "kubemanager.com/model/metrics/k8s"
+	metricsResp "kubemanager.com/model/metrics/response"
 	"strconv"
 	"time"
 )

@@ -2,7 +2,7 @@ package initiallize
 
 import (
 	"github.com/spf13/viper"
-	"kubmanager/global"
+	"kubemanager.com/global"
 )
 
 func Viper() {

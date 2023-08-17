@@ -1,10 +1,10 @@
 package api
 
 import (
-	"kubmanager/api/example"
-	"kubmanager/api/harbor"
-	"kubmanager/api/k8s"
-	"kubmanager/api/metrics"
+	"kubemanager.com/api/example"
+	"kubemanager.com/api/harbor"
+	"kubemanager.com/api/k8s"
+	"kubemanager.com/api/metrics"
 )
 
 type ApiGroup struct {

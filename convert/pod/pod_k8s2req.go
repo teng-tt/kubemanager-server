@@ -3,9 +3,9 @@ package pod
 import (
 	"fmt"
 	corev1 "k8s.io/api/core/v1"
-	"kubmanager/model/base"
-	pod_req "kubmanager/model/pod/request"
-	pod_res "kubmanager/model/pod/response"
+	"kubemanager.com/model/base"
+	pod_req "kubemanager.com/model/pod/request"
+	pod_res "kubemanager.com/model/pod/response"
 	"strings"
 )
 

@@ -2,8 +2,8 @@ package global
 
 import (
 	"k8s.io/client-go/kubernetes"
-	"kubmanager/config"
-	"kubmanager/plugins/harbor"
+	"kubemanager.com/config"
+	"kubemanager.com/plugins/harbor"
 )
 
 var (

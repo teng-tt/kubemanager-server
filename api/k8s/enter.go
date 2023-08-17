@@ -1,8 +1,8 @@
 package k8s
 
 import (
-	"kubmanager/service"
-	"kubmanager/validate"
+	"kubemanager.com/service"
+	"kubemanager.com/validate"
 )
 
 type ApiGroup struct {

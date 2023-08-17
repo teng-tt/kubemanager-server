@@ -2,8 +2,8 @@ package metrics
 
 import (
 	"github.com/gin-gonic/gin"
-	metricsResp "kubmanager/model/metrics/response"
-	"kubmanager/response"
+	metricsResp "kubemanager.com/model/metrics/response"
+	"kubemanager.com/response"
 )
 
 type MetricsApi struct {

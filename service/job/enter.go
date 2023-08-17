@@ -1,6 +1,6 @@
 package job
 
-import "kubmanager/convert"
+import "kubemanager.com/convert"
 
 type ServiceGroup struct {
 	JobService

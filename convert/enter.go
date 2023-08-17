@@ -1,10 +1,10 @@
 package convert
 
 import (
-	"kubmanager/convert/configmap"
-	"kubmanager/convert/node"
-	"kubmanager/convert/pod"
-	"kubmanager/convert/secret"
+	"kubemanager.com/convert/configmap"
+	"kubemanager.com/convert/node"
+	"kubemanager.com/convert/pod"
+	"kubemanager.com/convert/secret"
 )
 
 type ConvertGroup struct {
