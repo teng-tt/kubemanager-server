@@ -328,7 +328,7 @@ func (m *MetricsService) GetResource() []metricsResp.MetricsItem {
 // GetClusterUsage 集群使用情况
 func (m *MetricsService) GetClusterUsage() []metricsResp.MetricsItem {
 	metricsItemList := make([]metricsResp.MetricsItem, 0)
-	url := "/apis/metrics.k8s.io/v1betav1/nodes"
+	url := "/apis/metrics.k8s.io/v1beta1/nodes"
 	raw, err := global.KubeConfigSet.RESTClient().Get().AbsPath(url).DoRaw(context.TODO())
 	if err != nil {
 		return metricsItemList

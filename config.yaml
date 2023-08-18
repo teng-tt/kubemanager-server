@@ -8,13 +8,13 @@ system:
     cacertPath: "/xx/ca.crt"   # k8s集群ca证书
     tokenFile: "k8s_use/identity/token"  # k8s集群权限，使用token认证
   harbor:
-    enable: true
+    enable: false
     cacertPath: "/xx/ca.crt"
-    host: "harbor.kubemanager.com"
+    host: "192.168.2.11"
     scheme: "https"
     username: "admin"
     password: "123321"
   prometheus:
     enable: true
-    host: "prometheus.kubemanager.com"
+    host: "192.168.2.11:30090"
     scheme: "http"
